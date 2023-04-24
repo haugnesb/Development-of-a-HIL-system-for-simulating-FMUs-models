@@ -1278,8 +1278,8 @@ package TestPackage
       end ConfigTest;
       
       model TotalControl
-        parameter Real TestMotorTorqueAmplitude = 9 "Torque signal sendt to the test motor";
-        parameter Real TestMotorTorqueStartTime = 5 "Ramp up start time";
+        parameter Real TestMotorTorqueAmplitude = 5 "Torque signal sendt to the test motor";
+        parameter Real TestMotorTorqueStartTime = 11 "Ramp up start time";
         parameter Real TestMotorTorqueDuration = 5 "Duration of the ramp up";
         parameter Real TestMotorTorqueOffset = 0 "Initial torque value of the test motot";
         
@@ -1358,8 +1358,8 @@ package TestPackage
       end TotalControl;
       
       model TotalControl2
-        parameter Real TestMotorTorqueAmplitude = 9 "Torque signal sendt to the test motor";
-        parameter Real TestMotorTorqueStartTime = 5 "Ramp up start time";
+        parameter Real TestMotorTorqueAmplitude = 5 "Torque signal sendt to the test motor";
+        parameter Real TestMotorTorqueStartTime = 11 "Ramp up start time";
         parameter Real TestMotorTorqueDuration = 5 "Duration of the ramp up";
         parameter Real TestMotorTorqueOffset = 0 "Initial torque value of the test motot";
         
@@ -1791,7 +1791,9 @@ package TestPackage
           Line(points = {{46, -10}, {79, -10}, {79, -14}, {128, -14}}, color = {255, 127, 0}));
   connect(greaterEqual.u1, division.y) annotation(
           Line(points = {{-44, 4}, {-56, 4}, {-56, 8}, {-68, 8}, {-68, 46}, {-24, 46}, {-24, 78}, {-34, 78}}, color = {0, 0, 127}));
-      end test;
+      annotation(
+          experiment(StartTime = 0, StopTime = 1000, Tolerance = 1e-6, Interval = 0.2));
+end test;
     end WaterModel;
   end ActiveWork;
   annotation(
