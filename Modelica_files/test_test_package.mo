@@ -160,54 +160,6 @@ package TestPackage
         experiment(StopTime = 300));
     end Test_VFD_Servo1;
 
-    model Digital_signal_test
-      parameter Real PulsAmplitude = 1 "Amplitude of the puls";
-      parameter Integer DCOM = 1 "Digital input common";
-      parameter Real PulsStartTime = 0 "start time off the puls";
-      parameter Real PulsPeriod = 60 "Puls Duration In Seconds";
-      parameter Real PulsWidth = 50 "Puls on time in";
-      Modelica.Blocks.Math.RealToInteger realToInteger annotation(
-        Placement(transformation(extent = {{-22, -10}, {-2, 10}})));
-      Modelica.Blocks.Sources.Pulse pulse(amplitude = PulsAmplitude, width = PulsWidth, period = PulsPeriod, startTime = PulsStartTime) annotation(
-        Placement(transformation(extent = {{-80, -10}, {-60, 10}})));
-      Modelica.Blocks.Interfaces.IntegerOutput StartStop "Connector of Integer output signal" annotation(
-        Placement(transformation(extent = {{100, -10}, {120, 10}})));
-      Modelica.Blocks.Sources.IntegerConstant integerConstant(k = DCOM) annotation(
-        Placement(transformation(extent = {{-80, 30}, {-60, 50}})));
-      Modelica.Blocks.Interfaces.IntegerOutput DCOMSignal "Connector of Integer output signal" annotation(
-        Placement(transformation(extent = {{100, 30}, {120, 50}})));
-    equation
-      connect(realToInteger.u, pulse.y) annotation(
-        Line(points = {{-24, 0}, {-59, 0}}, color = {0, 0, 127}));
-      connect(realToInteger.y, StartStop) annotation(
-        Line(points = {{-1, 0}, {110, 0}}, color = {255, 127, 0}));
-      connect(integerConstant.y, DCOMSignal) annotation(
-        Line(points = {{-59, 40}, {110, 40}}, color = {255, 127, 0}));
-      connect(DCOMSignal, DCOMSignal) annotation(
-        Line(points = {{110, 40}, {110, 40}}, color = {255, 127, 0}));
-      annotation(
-        Icon(coordinateSystem(preserveAspectRatio = false)),
-        Diagram(coordinateSystem(preserveAspectRatio = false)),
-        experiment(StopTime = 300));
-    end Digital_signal_test;
-
-    model Digital_signal_test1
-      parameter Integer DCOM = 1 "Digital input common";
-      Modelica.Blocks.Sources.IntegerConstant integerConstant(k = DCOM) annotation(
-        Placement(transformation(extent = {{-80, 30}, {-60, 50}})));
-      Modelica.Blocks.Interfaces.IntegerOutput DCOMSignal "Connector of Integer output signal" annotation(
-        Placement(transformation(extent = {{100, 30}, {120, 50}})));
-    equation
-      connect(integerConstant.y, DCOMSignal) annotation(
-        Line(points = {{-59, 40}, {110, 40}}, color = {255, 127, 0}));
-      connect(DCOMSignal, DCOMSignal) annotation(
-        Line(points = {{110, 40}, {110, 40}}, color = {255, 127, 0}));
-      annotation(
-        Icon(coordinateSystem(preserveAspectRatio = false)),
-        Diagram(coordinateSystem(preserveAspectRatio = false)),
-        experiment(StopTime = 300));
-    end Digital_signal_test1;
-
     model Test1_VFD
       parameter Real PulsAmplitude = 1 "Amplitude of the puls";
       parameter Integer Motorvoltage = 5 "Voltage of the motor";
@@ -1229,36 +1181,6 @@ package TestPackage
           experiment(StartTime = 0, StopTime = 300, Tolerance = 1e-06, Interval = 0.6));
       end ConfigTestVDF22;
 
-      model Test1
-        parameter Real TestMotorTorqueAmplitude = 9 "Torque signal sendt to the test motor";
-        parameter Real TestMotorTorqueStartTime = 5 "Ramp up start time";
-        parameter Real TestMotorTorqueDuration = 5 "Duration of the ramp up";
-        parameter Real TestMotorTorqueOffset = 0 "Initial torque value sendt to the test motot";
-        Modelica.Blocks.Interfaces.IntegerOutput Start_Stop_Testmotor "Connector of Integer output signal" annotation(
-          Placement(transformation(extent = {{100, 20}, {120, 40}})));
-        Modelica.Blocks.Interfaces.RealOutput Test_motor_torque "Connector of Real output signal" annotation(
-          Placement(transformation(extent = {{100, 40}, {120, 60}})));
-        Modelica.Blocks.Math.BooleanToInteger booleanToInteger1 annotation(
-          Placement(transformation(extent = {{66, 20}, {86, 40}})));
-        Modelica.Blocks.Sources.Ramp TestMotortorque(height = TestMotorTorqueAmplitude, duration = TestMotorTorqueDuration, offset = TestMotorTorqueOffset, startTime = TestMotorTorqueStartTime) annotation(
-          Placement(transformation(extent = {{-80, 40}, {-60, 60}})));
-        Modelica.Blocks.Logical.GreaterThreshold greaterThreshold annotation(
-          Placement(visible = true, transformation(origin = {10, 32}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      equation
-        connect(Start_Stop_Testmotor, booleanToInteger1.y) annotation(
-          Line(points = {{110, 30}, {87, 30}}, color = {255, 127, 0}));
-        connect(TestMotortorque.y, Test_motor_torque) annotation(
-          Line(points = {{-59, 50}, {110, 50}}, color = {0, 0, 127}));
-        connect(booleanToInteger1.u, greaterThreshold.y) annotation(
-          Line(points = {{64, 30}, {21, 30}, {21, 32}}, color = {255, 0, 255}));
-        connect(greaterThreshold.u, TestMotortorque.y) annotation(
-          Line(points = {{-2, 32}, {-59, 32}, {-59, 50}}, color = {0, 0, 127}));
-        annotation(
-          Icon(coordinateSystem(preserveAspectRatio = false)),
-          Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}})),
-          experiment(StopTime = 300, StartTime = 0, Tolerance = 1e-06, Interval = 0.6));
-      end Test1;
-
       model ConfigTest
         Modelica.Blocks.Math.Add add annotation(
           Placement(visible = true, transformation(origin = {-44, 24}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -1353,8 +1275,8 @@ package TestPackage
           experiment(StopTime = 300, StartTime = 0, Tolerance = 1e-06, Interval = 0.6));
       end TotalControl;
 
-      model TotalControl2
-        parameter Real TestMotorTorqueAmplitude = 9 "Torque signal sendt to the test motor";
+      model Test
+        parameter Real TestMotorTorqueAmplitude = 8 "Torque signal sendt to the test motor";
         parameter Real TestMotorTorqueStartTime = 11 "Ramp up start time";
         parameter Real TestMotorTorqueDuration = 5 "Duration of the ramp up";
         parameter Real TestMotorTorqueOffset = 0 "Initial torque value of the test motot";
@@ -1366,9 +1288,9 @@ package TestPackage
         parameter Real ServoMotorTorqueStartTime = 1 "Ramp up start time";
         parameter Real ServoMotorTorqueDuration = 0 "Duration of the ramp up";
         parameter Real ServoMotorTorqueOffset = 0 "Initial torque value of the servo motor";
-        Modelica.Blocks.Interfaces.IntegerOutput Start_Stop_Testmotor "Connector of Integer output signal" annotation(
+        Modelica.Blocks.Interfaces.IntegerOutput TM_Start_Stop_Out "Connector of Integer output signal" annotation(
           Placement(visible = true, transformation(origin = {0, 36}, extent = {{100, 20}, {120, 40}}, rotation = 0), iconTransformation(origin = {0, 40}, extent = {{100, 20}, {120, 40}}, rotation = 0)));
-        Modelica.Blocks.Interfaces.RealOutput Test_motor_torque "Connector of Real output signal" annotation(
+        Modelica.Blocks.Interfaces.RealOutput TM_Torque_Out "Connector of Real output signal" annotation(
           Placement(visible = true, transformation(origin = {0, 36}, extent = {{100, 40}, {120, 60}}, rotation = 0), iconTransformation(origin = {0, 40}, extent = {{100, 40}, {120, 60}}, rotation = 0)));
         Modelica.Blocks.Math.BooleanToInteger booleanToInteger1 annotation(
           Placement(visible = true, transformation(origin = {0, 36}, extent = {{66, 20}, {86, 40}}, rotation = 0)));
@@ -1378,7 +1300,7 @@ package TestPackage
           Placement(visible = true, transformation(origin = {46, 66}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
         Modelica.Blocks.Logical.And and1 annotation(
           Placement(visible = true, transformation(origin = {10, 2}, extent = {{28, -60}, {48, -40}}, rotation = 0)));
-        Modelica.Blocks.Interfaces.RealOutput Servo_motor_speed annotation(
+        Modelica.Blocks.Interfaces.RealOutput SM_Speed_Out annotation(
           Placement(visible = true, transformation(origin = {0, 2}, extent = {{100, -98}, {120, -78}}, rotation = 0), iconTransformation(origin = {0, 0}, extent = {{100, -98}, {120, -78}}, rotation = 0)));
         Modelica.Blocks.Math.BooleanToInteger booleanToInteger annotation(
           Placement(visible = true, transformation(origin = {10, 2}, extent = {{60, -60}, {80, -40}}, rotation = 0)));
@@ -1386,40 +1308,40 @@ package TestPackage
           Placement(visible = true, transformation(origin = {28, 8}, extent = {{-14, -34}, {6, -14}}, rotation = 0)));
         Modelica.Blocks.Logical.GreaterThreshold greaterThreshold2 annotation(
           Placement(visible = true, transformation(origin = {20, 4}, extent = {{-14, -64}, {6, -44}}, rotation = 0)));
-        Modelica.Blocks.Interfaces.RealOutput Servo_Start_Torque annotation(
+        Modelica.Blocks.Interfaces.RealOutput SM_Start_Torque_Out annotation(
           Placement(visible = true, transformation(origin = {0, 2}, extent = {{100, -80}, {120, -60}}, rotation = 0), iconTransformation(origin = {0, 0}, extent = {{100, -80}, {120, -60}}, rotation = 0)));
-        Modelica.Blocks.Interfaces.IntegerOutput Start_Stop_Servomotor annotation(
+        Modelica.Blocks.Interfaces.IntegerOutput SM_Start_Stop_Out annotation(
           Placement(visible = true, transformation(origin = {0, 2}, extent = {{100, -60}, {120, -40}}, rotation = 0), iconTransformation(origin = {0, 0}, extent = {{100, -60}, {120, -40}}, rotation = 0)));
-        Modelica.Blocks.Interfaces.IntegerOutput Speed_Torque annotation(
+        Modelica.Blocks.Interfaces.IntegerOutput TM_Speed_Torque_Out annotation(
           Placement(visible = true, transformation(origin = {110, 42}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
         Modelica.Blocks.Sources.Ramp ServoMotorTorque(duration = ServoMotorTorqueDuration, height = ServoMotorTorqueAmplitude, offset = ServoMotorTorqueOffset, startTime = ServoMotorTorqueStartTime) annotation(
           Placement(visible = true, transformation(origin = {60, -120}, extent = {{-80, 40}, {-60, 60}}, rotation = 0)));
         Modelica.Blocks.Sources.Ramp ServoMotorVoltage(duration = ServoMotorVoltageDuration, height = ServoMotorVoltageAmplitude, offset = ServoMotorVoltageOffset, startTime = ServoMotorVoltageStartTime) annotation(
           Placement(visible = true, transformation(origin = {32, -134}, extent = {{-80, 40}, {-60, 60}}, rotation = 0)));
-        Modelica.Blocks.Interfaces.RealInput TM_M_Speed annotation(
+        Modelica.Blocks.Interfaces.RealInput TM_M_Speed_In annotation(
           Placement(visible = true, transformation(origin = {-120, 88}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-120, 80}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-        Modelica.Blocks.Sources.Constant constant1(k = 455) annotation(
-          Placement(visible = true, transformation(origin = {-58, 54}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Blocks.Math.Product P1Voltage annotation(
-          Placement(visible = true, transformation(origin = {-56, 82}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Blocks.Math.Product P2Speed annotation(
+        Modelica.Blocks.Math.Product TM_Voltage annotation(
+          Placement(visible = true, transformation(origin = {-34, 88}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
+        Modelica.Blocks.Math.Product TM_Speed annotation(
           Placement(visible = true, transformation(origin = {-14, 68}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Blocks.Sources.Constant const(k = 5) annotation(
-          Placement(visible = true, transformation(origin = {-90, 54}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Blocks.Math.Gain Ao1(k = 1) annotation(
+        Modelica.Blocks.Sources.Constant Voltage_Conversion(k = 5) annotation(
+          Placement(visible = true, transformation(origin = {-65, 83}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+        Modelica.Blocks.Math.Gain SM_Voltage_Conversion(k = 405) annotation(
           Placement(visible = true, transformation(origin = {-70, 20}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Blocks.Math.Gain Ao2(k = 1) annotation(
-          Placement(visible = true, transformation(origin = {-70, -20}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Blocks.Interfaces.RealInput AO1 annotation(
+        Modelica.Blocks.Math.Gain SM_Torque_Conversion(k = 1) annotation(
+          Placement(visible = true, transformation(origin = {-48, -20}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Interfaces.RealInput SM_M_Speed_In annotation(
           Placement(visible = true, transformation(origin = {-120, 20}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-120, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-        Modelica.Blocks.Interfaces.RealInput AO2 annotation(
+        Modelica.Blocks.Interfaces.RealInput SM_M_Torque_In annotation(
           Placement(visible = true, transformation(origin = {-120, -20}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-120, -80}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-        Modelica.Blocks.Interfaces.IntegerOutput Forward_Reverse annotation(
+        Modelica.Blocks.Interfaces.IntegerOutput TM_Forward_Reverse_Out annotation(
           Placement(visible = true, transformation(origin = {110, 20}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Sources.Constant Speed_Conversion(k = 455) annotation(
+          Placement(visible = true, transformation(origin = {-58, 54}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       equation
-        connect(Start_Stop_Testmotor, booleanToInteger1.y) annotation(
+        connect(TM_Start_Stop_Out, booleanToInteger1.y) annotation(
           Line(points = {{110, 66}, {87, 66}}, color = {255, 127, 0}));
-        connect(TestMotortorque.y, Test_motor_torque) annotation(
+        connect(TestMotortorque.y, TM_Torque_Out) annotation(
           Line(points = {{25, 86}, {110, 86}}, color = {0, 0, 127}));
         connect(booleanToInteger1.u, greaterThreshold.y) annotation(
           Line(points = {{64, 66}, {57, 66}}, color = {255, 0, 255}));
@@ -1431,37 +1353,37 @@ package TestPackage
           Line(points = {{68, -48}, {59, -48}}, color = {255, 0, 255}));
         connect(and1.u2, greaterThreshold2.y) annotation(
           Line(points = {{36, -56}, {31.5, -56}, {31.5, -50}, {27, -50}}, color = {255, 0, 255}));
-        connect(booleanToInteger.y, Start_Stop_Servomotor) annotation(
+        connect(booleanToInteger.y, SM_Start_Stop_Out) annotation(
           Line(points = {{91, -48}, {110, -48}}, color = {255, 127, 0}));
-        connect(booleanToInteger1.y, Speed_Torque) annotation(
+        connect(booleanToInteger1.y, TM_Speed_Torque_Out) annotation(
           Line(points = {{87, 66}, {87, 42}, {110, 42}}, color = {255, 127, 0}));
-        connect(ServoMotorTorque.y, Servo_Start_Torque) annotation(
+        connect(ServoMotorTorque.y, SM_Start_Torque_Out) annotation(
           Line(points = {{1, -70}, {47.5, -70}, {47.5, -68}, {110, -68}}, color = {0, 0, 127}));
         connect(greaterThreshold2.u, ServoMotorTorque.y) annotation(
           Line(points = {{4, -50}, {2, -50}, {2, -70}, {1, -70}}, color = {0, 0, 127}));
-        connect(ServoMotorVoltage.y, Servo_motor_speed) annotation(
+        connect(ServoMotorVoltage.y, SM_Speed_Out) annotation(
           Line(points = {{-27, -84}, {41.5, -84}, {41.5, -86}, {110, -86}}, color = {0, 0, 127}));
         connect(ServoMotorVoltage.y, greaterThreshold1.u) annotation(
           Line(points = {{-27, -84}, {-27, -50}, {-6, -50}, {-6, -16}, {12, -16}}, color = {0, 0, 127}));
-        connect(P1Voltage.u1, TM_M_Speed) annotation(
-          Line(points = {{-68, 88}, {-120, 88}}, color = {0, 0, 127}));
-        connect(constant1.y, P2Speed.u2) annotation(
-          Line(points = {{-47, 54}, {-38.5, 54}, {-38.5, 62}, {-26, 62}}, color = {0, 0, 127}));
-        connect(P2Speed.u1, TM_M_Speed) annotation(
+        connect(TM_Voltage.u1, TM_M_Speed_In) annotation(
+          Line(points = {{-41, 92}, {-85.5, 92}, {-85.5, 88}, {-120, 88}}, color = {0, 0, 127}));
+        connect(TM_Speed.u1, TM_M_Speed_In) annotation(
           Line(points = {{-26, 74}, {-75, 74}, {-75, 88}, {-120, 88}}, color = {0, 0, 127}));
-        connect(const.y, P1Voltage.u2) annotation(
-          Line(points = {{-79, 54}, {-75, 54}, {-75, 76}, {-68, 76}}, color = {0, 0, 127}));
-        connect(Ao1.u, AO1) annotation(
+        connect(Voltage_Conversion.y, TM_Voltage.u2) annotation(
+          Line(points = {{-59.5, 83}, {-59.5, 84}, {-41, 84}}, color = {0, 0, 127}));
+        connect(SM_Voltage_Conversion.u, SM_M_Speed_In) annotation(
           Line(points = {{-82, 20}, {-120, 20}}, color = {0, 0, 127}));
-        connect(Ao2.u, AO2) annotation(
-          Line(points = {{-82, -20}, {-120, -20}}, color = {0, 0, 127}));
-        connect(booleanToInteger1.y, Forward_Reverse) annotation(
+        connect(booleanToInteger1.y, TM_Forward_Reverse_Out) annotation(
           Line(points = {{88, 66}, {86, 66}, {86, 20}, {110, 20}}, color = {255, 127, 0}));
+        connect(Speed_Conversion.y, TM_Speed.u2) annotation(
+          Line(points = {{-47, 54}, {-38.5, 54}, {-38.5, 62}, {-26, 62}}, color = {0, 0, 127}));
+        connect(SM_M_Torque_In, SM_Torque_Conversion.u) annotation(
+          Line(points = {{-120, -20}, {-60, -20}}, color = {0, 0, 127}));
         annotation(
           Icon(coordinateSystem(preserveAspectRatio = false)),
           Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}})),
           experiment(StopTime = 300, StartTime = 0, Tolerance = 1e-06, Interval = 0.6));
-      end TotalControl2;
+      end Test;
 
       model OnlyIn
         Modelica.Blocks.Interfaces.RealInput TM_M_Speed annotation(
@@ -1615,33 +1537,495 @@ package TestPackage
           experiment(StopTime = 300, StartTime = 0, Tolerance = 1e-06, Interval = 0.6));
       end Servo;
 
-      model tettetetet
-        Modelica.Blocks.Logical.Greater greater annotation(
-          Placement(visible = true, transformation(origin = {-36, 22}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Blocks.Logical.Switch switch1 annotation(
-          Placement(visible = true, transformation(origin = {14, 22}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Blocks.Sources.Sine sine(amplitude = 5, f = 10) annotation(
-          Placement(visible = true, transformation(origin = {-84, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Blocks.Sources.Constant const(k = 0) annotation(
-          Placement(visible = true, transformation(origin = {-88, -14}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Blocks.Sources.Constant gjgjgjg(k = 40) annotation(
-          Placement(visible = true, transformation(origin = {-78, 66}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Blocks.Interfaces.RealOutput y annotation(
-          Placement(visible = true, transformation(origin = {128, 18}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {128, 18}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      model T1
+        parameter Real TestMotorTorqueAmplitude = -4 "Torque signal sendt to the test motor";
+        parameter Real TestMotorTorqueStartTime = 20 "Ramp up start time";
+        parameter Real TestMotorTorqueDuration = 3 "Duration of the ramp up";
+        parameter Real TestMotorTorqueOffset = 8 "Initial torque value of the test motot";
+        parameter Real ServoMotorVoltageAmplitude = 2.5 "Voltage signal sendt to the Servomotor";
+        parameter Real ServoMotorVoltageStartTime = 1 "Ramp up start time";
+        parameter Real ServoMotorVoltageDuration = 0 "Duration of the ram up";
+        parameter Real ServoMotorVoltageOffset = 0 "Initial voltage value of the servo motor";
+        parameter Real ServoMotorTorqueAmplitude = 0.05 "Start torque for the servo motor";
+        parameter Real ServoMotorTorqueStartTime = 1 "Ramp up start time";
+        parameter Real ServoMotorTorqueDuration = 0 "Duration of the ramp up";
+        parameter Real ServoMotorTorqueOffset = 0 "Initial torque value of the servo motor";
+        Modelica.Blocks.Interfaces.IntegerOutput TM_Start_Stop_Out "Connector of Integer output signal" annotation(
+          Placement(visible = true, transformation(origin = {0, 36}, extent = {{100, 20}, {120, 40}}, rotation = 0), iconTransformation(origin = {0, 40}, extent = {{100, 20}, {120, 40}}, rotation = 0)));
+        Modelica.Blocks.Interfaces.RealOutput TM_Torque_Out "Connector of Real output signal" annotation(
+          Placement(visible = true, transformation(origin = {0, 36}, extent = {{100, 40}, {120, 60}}, rotation = 0), iconTransformation(origin = {0, 40}, extent = {{100, 40}, {120, 60}}, rotation = 0)));
+        Modelica.Blocks.Math.BooleanToInteger booleanToInteger1 annotation(
+          Placement(visible = true, transformation(origin = {79, 69}, extent = {{-7, -7}, {7, 7}}, rotation = 0)));
+        Modelica.Blocks.Sources.Ramp TestMotortorque(duration = TestMotorTorqueDuration, height = TestMotorTorqueAmplitude, offset = 0, startTime = TestMotorTorqueStartTime) annotation(
+          Placement(visible = true, transformation(origin = {64, 18}, extent = {{-80, 40}, {-60, 60}}, rotation = 0)));
+        Modelica.Blocks.Logical.And and1 annotation(
+          Placement(visible = true, transformation(origin = {58, -48}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
+        Modelica.Blocks.Interfaces.RealOutput SM_Speed_Out annotation(
+          Placement(visible = true, transformation(origin = {0, 2}, extent = {{100, -98}, {120, -78}}, rotation = 0), iconTransformation(origin = {0, 0}, extent = {{100, -98}, {120, -78}}, rotation = 0)));
+        Modelica.Blocks.Math.BooleanToInteger booleanToInteger annotation(
+          Placement(visible = true, transformation(origin = {80, -48}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
+        Modelica.Blocks.Logical.GreaterThreshold greaterThreshold1 annotation(
+          Placement(visible = true, transformation(origin = {29, -37}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+        Modelica.Blocks.Logical.GreaterThreshold greaterThreshold2 annotation(
+          Placement(visible = true, transformation(origin = {32, -54}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
+        Modelica.Blocks.Interfaces.RealOutput SM_Start_Torque_Out annotation(
+          Placement(visible = true, transformation(origin = {0, 2}, extent = {{100, -80}, {120, -60}}, rotation = 0), iconTransformation(origin = {0, 0}, extent = {{100, -80}, {120, -60}}, rotation = 0)));
+        Modelica.Blocks.Interfaces.IntegerOutput SM_Start_Stop_Out annotation(
+          Placement(visible = true, transformation(origin = {0, 2}, extent = {{100, -60}, {120, -40}}, rotation = 0), iconTransformation(origin = {0, 0}, extent = {{100, -60}, {120, -40}}, rotation = 0)));
+        Modelica.Blocks.Interfaces.IntegerOutput TM_Speed_Torque_Out annotation(
+          Placement(visible = true, transformation(origin = {110, 42}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Sources.Ramp ServoMotorTorque(duration = ServoMotorTorqueDuration, height = ServoMotorTorqueAmplitude, offset = ServoMotorTorqueOffset, startTime = ServoMotorTorqueStartTime) annotation(
+          Placement(visible = true, transformation(origin = {-9, -67}, extent = {{-7, -7}, {7, 7}}, rotation = 0)));
+        Modelica.Blocks.Sources.Ramp ServoMotorVoltage(duration = ServoMotorVoltageDuration, height = ServoMotorVoltageAmplitude, offset = ServoMotorVoltageOffset, startTime = ServoMotorVoltageStartTime) annotation(
+          Placement(visible = true, transformation(origin = {32, -134}, extent = {{-80, 40}, {-60, 60}}, rotation = 0)));
+        Modelica.Blocks.Interfaces.RealInput TM_M_Speed_In annotation(
+          Placement(visible = true, transformation(origin = {-120, 88}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-120, 80}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+        Modelica.Blocks.Math.Product TM_Voltage annotation(
+          Placement(visible = true, transformation(origin = {-48, 88}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
+        Modelica.Blocks.Math.Product TM_Speed annotation(
+          Placement(visible = true, transformation(origin = {-62, 62}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
+        Modelica.Blocks.Sources.Constant Voltage_Conversion(k = 5) annotation(
+          Placement(visible = true, transformation(origin = {-65, 83}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+        Modelica.Blocks.Math.Gain SM_Voltage_Conversion(k = 405) annotation(
+          Placement(visible = true, transformation(origin = {-70, 20}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Math.Gain SM_Torque_Conversion(k = 1) annotation(
+          Placement(visible = true, transformation(origin = {-48, -20}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Interfaces.RealInput SM_M_Speed_In annotation(
+          Placement(visible = true, transformation(origin = {-120, 20}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-120, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+        Modelica.Blocks.Interfaces.RealInput SM_M_Torque_In annotation(
+          Placement(visible = true, transformation(origin = {-120, -20}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-120, -80}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+        Modelica.Blocks.Interfaces.IntegerOutput TM_Forward_Reverse_Out annotation(
+          Placement(visible = true, transformation(origin = {110, 20}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Sources.Constant Speed_Conversion(k = 455) annotation(
+          Placement(visible = true, transformation(origin = {-92, 58}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
+        Modelica.Blocks.Nonlinear.Limiter div0protect(uMax = Modelica.Constants.inf, uMin = Modelica.Constants.small) annotation(
+          Placement(visible = true, transformation(origin = {-80, -20}, extent = {{6, 6}, {-6, -6}}, rotation = -180)));
+        Modelica.Blocks.Logical.GreaterThreshold greaterThreshold annotation(
+          Placement(visible = true, transformation(origin = {49, 69}, extent = {{-7, -7}, {7, 7}}, rotation = 0)));
+  Modelica.Blocks.Sources.Ramp ramp(duration = TestMotorTorqueDuration, height = TestMotorTorqueOffset, offset = 0, startTime = 5) annotation(
+          Placement(visible = true, transformation(origin = {68, -24}, extent = {{-80, 40}, {-60, 60}}, rotation = 0)));
+  Modelica.Blocks.Math.Add add annotation(
+          Placement(visible = true, transformation(origin = {22, 52}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       equation
-        connect(greater.y, switch1.u2) annotation(
-          Line(points = {{-24, 22}, {2, 22}}, color = {255, 0, 255}));
-        connect(sine.y, greater.u1) annotation(
-          Line(points = {{-72, 30}, {-62, 30}, {-62, 22}, {-48, 22}}, color = {0, 0, 127}));
-        connect(const.y, greater.u2) annotation(
-          Line(points = {{-77, -14}, {-66, -14}, {-66, 14}, {-48, 14}}, color = {0, 0, 127}));
-        connect(const.y, switch1.u3) annotation(
-          Line(points = {{-76, -14}, {-16, -14}, {-16, 14}, {2, 14}}, color = {0, 0, 127}));
-        connect(gjgjgjg.y, switch1.u1) annotation(
-          Line(points = {{-66, 66}, {2, 66}, {2, 30}}, color = {0, 0, 127}));
-        connect(switch1.y, y) annotation(
-          Line(points = {{26, 22}, {128, 22}, {128, 18}}, color = {0, 0, 127}));
-      end tettetetet;
+        connect(TM_Start_Stop_Out, booleanToInteger1.y) annotation(
+          Line(points = {{110, 66}, {98.5, 66}, {98.5, 69}, {87, 69}}, color = {255, 127, 0}));
+        connect(and1.u1, greaterThreshold1.y) annotation(
+          Line(points = {{51, -48}, {51, -37}, {34.5, -37}}, color = {255, 0, 255}));
+        connect(booleanToInteger.u, and1.y) annotation(
+          Line(points = {{73, -48}, {65, -48}}, color = {255, 0, 255}));
+        connect(and1.u2, greaterThreshold2.y) annotation(
+          Line(points = {{51, -53}, {36, -53}, {36, -54}, {39, -54}}, color = {255, 0, 255}));
+        connect(booleanToInteger.y, SM_Start_Stop_Out) annotation(
+          Line(points = {{87, -48}, {110, -48}}, color = {255, 127, 0}));
+        connect(booleanToInteger1.y, TM_Speed_Torque_Out) annotation(
+          Line(points = {{87, 69}, {87, 42}, {110, 42}}, color = {255, 127, 0}));
+        connect(ServoMotorTorque.y, SM_Start_Torque_Out) annotation(
+          Line(points = {{-1, -67}, {53.5, -67}, {53.5, -68}, {110, -68}}, color = {0, 0, 127}));
+        connect(greaterThreshold2.u, ServoMotorTorque.y) annotation(
+          Line(points = {{25, -54}, {2, -54}, {2, -67}, {-1, -67}}, color = {0, 0, 127}));
+        connect(ServoMotorVoltage.y, SM_Speed_Out) annotation(
+          Line(points = {{-27, -84}, {41.5, -84}, {41.5, -86}, {110, -86}}, color = {0, 0, 127}));
+        connect(ServoMotorVoltage.y, greaterThreshold1.u) annotation(
+          Line(points = {{-27, -84}, {-27, -50}, {-6, -50}, {-6, -37}, {23, -37}}, color = {0, 0, 127}));
+        connect(TM_Voltage.u1, TM_M_Speed_In) annotation(
+          Line(points = {{-55, 92}, {-85.5, 92}, {-85.5, 88}, {-120, 88}}, color = {0, 0, 127}));
+        connect(TM_Speed.u1, TM_M_Speed_In) annotation(
+          Line(points = {{-69, 66}, {-75, 66}, {-75, 88}, {-120, 88}}, color = {0, 0, 127}));
+        connect(Voltage_Conversion.y, TM_Voltage.u2) annotation(
+          Line(points = {{-59.5, 83}, {-59.5, 84}, {-55, 84}}, color = {0, 0, 127}));
+        connect(SM_Voltage_Conversion.u, SM_M_Speed_In) annotation(
+          Line(points = {{-82, 20}, {-120, 20}}, color = {0, 0, 127}));
+        connect(booleanToInteger1.y, TM_Forward_Reverse_Out) annotation(
+          Line(points = {{87, 69}, {86, 69}, {86, 20}, {110, 20}}, color = {255, 127, 0}));
+        connect(Speed_Conversion.y, TM_Speed.u2) annotation(
+          Line(points = {{-85, 58}, {-69, 58}}, color = {0, 0, 127}));
+        connect(div0protect.u, SM_M_Torque_In) annotation(
+          Line(points = {{-88, -20}, {-120, -20}}, color = {0, 0, 127}));
+        connect(SM_Torque_Conversion.u, div0protect.y) annotation(
+          Line(points = {{-60, -20}, {-74, -20}}, color = {0, 0, 127}));
+        connect(booleanToInteger1.u, greaterThreshold.y) annotation(
+          Line(points = {{71, 69}, {57, 69}}, color = {255, 0, 255}));
+  connect(add.y, greaterThreshold.u) annotation(
+          Line(points = {{34, 52}, {40, 52}, {40, 70}}, color = {0, 0, 127}));
+  connect(add.y, TM_Torque_Out) annotation(
+          Line(points = {{34, 52}, {38, 52}, {38, 86}, {110, 86}}, color = {0, 0, 127}));
+  connect(add.u1, TestMotortorque.y) annotation(
+          Line(points = {{10, 58}, {6, 58}, {6, 68}}, color = {0, 0, 127}));
+  connect(ramp.y, add.u2) annotation(
+          Line(points = {{10, 26}, {10, 46}}, color = {0, 0, 127}));
+        annotation(
+          Icon(coordinateSystem(preserveAspectRatio = false)),
+          Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}})),
+          experiment(StopTime = 300, StartTime = 0, Tolerance = 1e-06, Interval = 0.6));
+      end T1;
+
+      model Test1
+        parameter Real ServoMotorVoltageAmplitude = -2.5 "Voltage signal sendt to the Servomotor";
+        parameter Real ServoMotorVoltageStartTime = 1 "Ramp up start time";
+        parameter Real ServoMotorVoltageDuration = 0 "Duration of the ram up";
+        parameter Real ServoMotorVoltageOffset = 0 "Initial voltage value of the servo motor";
+        parameter Real ServoMotorTorqueAmplitude = 0.005 "Start torque for the servo motor";
+        parameter Real ServoMotorTorqueStartTime = 1 "Ramp up start time";
+        parameter Real ServoMotorTorqueDuration = 0 "Duration of the ramp up";
+        parameter Real ServoMotorTorqueOffset = 0 "Initial torque value of the servo motor";
+        Modelica.Blocks.Interfaces.RealOutput SM_Speed_Out annotation(
+          Placement(visible = true, transformation(origin = {2, 68}, extent = {{100, -98}, {120, -78}}, rotation = 0), iconTransformation(origin = {0, 0}, extent = {{100, -98}, {120, -78}}, rotation = 0)));
+        Modelica.Blocks.Math.BooleanToInteger booleanToInteger annotation(
+          Placement(visible = true, transformation(origin = {82, 18}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
+        Modelica.Blocks.Interfaces.RealOutput SM_Start_Torque_Out annotation(
+          Placement(visible = true, transformation(origin = {2, 68}, extent = {{100, -80}, {120, -60}}, rotation = 0), iconTransformation(origin = {0, 0}, extent = {{100, -80}, {120, -60}}, rotation = 0)));
+        Modelica.Blocks.Interfaces.IntegerOutput SM_Start_Stop_Out annotation(
+          Placement(visible = true, transformation(origin = {2, 68}, extent = {{100, -60}, {120, -40}}, rotation = 0), iconTransformation(origin = {0, 0}, extent = {{100, -60}, {120, -40}}, rotation = 0)));
+        Modelica.Blocks.Sources.Ramp ServoMotorTorque(duration = ServoMotorTorqueDuration, height = ServoMotorTorqueAmplitude, offset = ServoMotorTorqueOffset, startTime = ServoMotorTorqueStartTime) annotation(
+          Placement(visible = true, transformation(origin = {-9, -1}, extent = {{-7, -7}, {7, 7}}, rotation = 0)));
+        Modelica.Blocks.Sources.Ramp ServoMotorVoltage(duration = ServoMotorVoltageDuration, height = ServoMotorVoltageAmplitude, offset = ServoMotorVoltageOffset, startTime = ServoMotorVoltageStartTime) annotation(
+          Placement(visible = true, transformation(origin = {34, -68}, extent = {{-80, 40}, {-60, 60}}, rotation = 0)));
+        Modelica.Blocks.Logical.LessThreshold lessThreshold annotation(
+          Placement(visible = true, transformation(origin = {22, 38}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      equation
+        connect(booleanToInteger.y, SM_Start_Stop_Out) annotation(
+          Line(points = {{88.6, 18}, {111.6, 18}}, color = {255, 127, 0}));
+        connect(ServoMotorTorque.y, SM_Start_Torque_Out) annotation(
+          Line(points = {{-1, -1}, {55.2, -1}, {55.2, -2}, {111.7, -2}}, color = {0, 0, 127}));
+        connect(ServoMotorVoltage.y, SM_Speed_Out) annotation(
+          Line(points = {{-25, -18}, {43.5, -18}, {43.5, -20}, {112, -20}}, color = {0, 0, 127}));
+        connect(lessThreshold.u, ServoMotorVoltage.y) annotation(
+          Line(points = {{10, 38}, {-24, 38}, {-24, -18}}, color = {0, 0, 127}));
+        connect(lessThreshold.y, booleanToInteger.u) annotation(
+          Line(points = {{34, 38}, {54, 38}, {54, 18}, {74, 18}}, color = {255, 0, 255}));
+        annotation(
+          Icon(coordinateSystem(preserveAspectRatio = false)),
+          Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}})),
+          experiment(StopTime = 300, StartTime = 0, Tolerance = 1e-06, Interval = 0.6));
+      end Test1;
+
+      model Test2
+        parameter Real TestMotorTorqueAmplitude = 8 "Torque signal sendt to the test motor";
+        parameter Real TestMotorTorqueStartTime = 2 "Ramp up start time";
+        parameter Real TestMotorTorqueDuration = 3 "Duration of the ramp up";
+        parameter Real TestMotorTorqueOffset = 0 "Initial torque value of the test motot";
+        parameter Real ServoMotorVoltageAmplitude = 2.5 "Voltage signal sendt to the Servomotor";
+        parameter Real ServoMotorVoltageStartTime = 1 "Ramp up start time";
+        parameter Real ServoMotorVoltageDuration = 0 "Duration of the ram up";
+        parameter Real ServoMotorVoltageOffset = 0 "Initial voltage value of the servo motor";
+        parameter Real ServoMotorTorqueAmplitude = 0.05 "Start torque for the servo motor";
+        parameter Real ServoMotorTorqueStartTime = 1 "Ramp up start time";
+        parameter Real ServoMotorTorqueDuration = 0 "Duration of the ramp up";
+        parameter Real ServoMotorTorqueOffset = 0 "Initial torque value of the servo motor";
+        Modelica.Blocks.Interfaces.IntegerOutput TM_Start_Stop_Out "Connector of Integer output signal" annotation(
+          Placement(visible = true, transformation(origin = {0, 36}, extent = {{100, 20}, {120, 40}}, rotation = 0), iconTransformation(origin = {0, 40}, extent = {{100, 20}, {120, 40}}, rotation = 0)));
+        Modelica.Blocks.Interfaces.RealOutput TM_Torque_Out "Connector of Real output signal" annotation(
+          Placement(visible = true, transformation(origin = {0, 36}, extent = {{100, 40}, {120, 60}}, rotation = 0), iconTransformation(origin = {0, 40}, extent = {{100, 40}, {120, 60}}, rotation = 0)));
+        Modelica.Blocks.Math.BooleanToInteger booleanToInteger1 annotation(
+          Placement(visible = true, transformation(origin = {79, 69}, extent = {{-7, -7}, {7, 7}}, rotation = 0)));
+        Modelica.Blocks.Sources.Ramp TestMotortorque(height = TestMotorTorqueAmplitude, duration = TestMotorTorqueDuration, offset = TestMotorTorqueOffset, startTime = TestMotorTorqueStartTime) annotation(
+          Placement(visible = true, transformation(origin = {54, 34}, extent = {{-80, 40}, {-60, 60}}, rotation = 0)));
+        Modelica.Blocks.Interfaces.IntegerOutput TM_Speed_Torque_Out annotation(
+          Placement(visible = true, transformation(origin = {110, 42}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Interfaces.IntegerOutput TM_Forward_Reverse_Out annotation(
+          Placement(visible = true, transformation(origin = {110, 20}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Logical.GreaterThreshold greaterThreshold annotation(
+          Placement(visible = true, transformation(origin = {49, 69}, extent = {{-7, -7}, {7, 7}}, rotation = 0)));
+        Modelica.Blocks.Sources.Ramp ramp1(duration = 0, height = 1, offset = 0, startTime = 0) annotation(
+          Placement(visible = true, transformation(origin = {-22, 18}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      equation
+        connect(TM_Start_Stop_Out, booleanToInteger1.y) annotation(
+          Line(points = {{110, 66}, {98.5, 66}, {98.5, 69}, {87, 69}}, color = {255, 127, 0}));
+        connect(booleanToInteger1.y, TM_Speed_Torque_Out) annotation(
+          Line(points = {{87, 69}, {87, 42}, {110, 42}}, color = {255, 127, 0}));
+        connect(booleanToInteger1.y, TM_Forward_Reverse_Out) annotation(
+          Line(points = {{87, 69}, {86, 69}, {86, 20}, {110, 20}}, color = {255, 127, 0}));
+        connect(booleanToInteger1.u, greaterThreshold.y) annotation(
+          Line(points = {{71, 69}, {57, 69}}, color = {255, 0, 255}));
+        connect(TestMotortorque.y, TM_Torque_Out) annotation(
+          Line(points = {{-4, 84}, {48, 84}, {48, 86}, {110, 86}}, color = {0, 0, 127}));
+        connect(ramp1.y, greaterThreshold.u) annotation(
+          Line(points = {{-10, 18}, {28, 18}, {28, 70}, {40, 70}}, color = {0, 0, 127}));
+        annotation(
+          Icon(coordinateSystem(preserveAspectRatio = false)),
+          Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}})),
+          experiment(StopTime = 300, StartTime = 0, Tolerance = 1e-06, Interval = 0.6));
+      end Test2;
+
+      model Test3
+        parameter Real TestMotorTorqueAmplitude = 8 "Torque signal sendt to the test motor";
+        parameter Real TestMotorTorqueStartTime = 2 "Ramp up start time";
+        parameter Real TestMotorTorqueDuration = 3 "Duration of the ramp up";
+        parameter Real TestMotorTorqueOffset = 0 "Initial torque value of the test motot";
+        parameter Real ServoMotorVoltageAmplitude = 2.5 "Voltage signal sendt to the Servomotor";
+        parameter Real ServoMotorVoltageStartTime = 1 "Ramp up start time";
+        parameter Real ServoMotorVoltageDuration = 0 "Duration of the ram up";
+        parameter Real ServoMotorVoltageOffset = 0 "Initial voltage value of the servo motor";
+        parameter Real ServoMotorTorqueAmplitude = 0.05 "Start torque for the servo motor";
+        parameter Real ServoMotorTorqueStartTime = 1 "Ramp up start time";
+        parameter Real ServoMotorTorqueDuration = 0 "Duration of the ramp up";
+        parameter Real ServoMotorTorqueOffset = 0 "Initial torque value of the servo motor";
+        Modelica.Blocks.Interfaces.IntegerOutput TM_Start_Stop_Out "Connector of Integer output signal" annotation(
+          Placement(visible = true, transformation(origin = {0, 36}, extent = {{100, 20}, {120, 40}}, rotation = 0), iconTransformation(origin = {0, 40}, extent = {{100, 20}, {120, 40}}, rotation = 0)));
+        Modelica.Blocks.Interfaces.RealOutput TM_Torque_Out "Connector of Real output signal" annotation(
+          Placement(visible = true, transformation(origin = {0, 36}, extent = {{100, 40}, {120, 60}}, rotation = 0), iconTransformation(origin = {0, 40}, extent = {{100, 40}, {120, 60}}, rotation = 0)));
+        Modelica.Blocks.Sources.Ramp TestMotortorque(height = TestMotorTorqueAmplitude, duration = TestMotorTorqueDuration, offset = TestMotorTorqueOffset, startTime = TestMotorTorqueStartTime) annotation(
+          Placement(visible = true, transformation(origin = {54, 34}, extent = {{-80, 40}, {-60, 60}}, rotation = 0)));
+        Modelica.Blocks.Interfaces.IntegerOutput TM_Speed_Torque_Out annotation(
+          Placement(visible = true, transformation(origin = {110, 42}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Interfaces.IntegerOutput TM_Forward_Reverse_Out annotation(
+          Placement(visible = true, transformation(origin = {110, 20}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Sources.IntegerConstant integerConstant(k = 1) annotation(
+          Placement(visible = true, transformation(origin = {-16, 24}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      equation
+        connect(TestMotortorque.y, TM_Torque_Out) annotation(
+          Line(points = {{-4, 84}, {48, 84}, {48, 86}, {110, 86}}, color = {0, 0, 127}));
+        connect(integerConstant.y, TM_Forward_Reverse_Out) annotation(
+          Line(points = {{-4, 24}, {110, 24}, {110, 20}}, color = {255, 127, 0}));
+        connect(TM_Speed_Torque_Out, integerConstant.y) annotation(
+          Line(points = {{110, 42}, {-6, 42}, {-6, 24}, {-4, 24}}, color = {255, 127, 0}));
+        connect(TM_Start_Stop_Out, integerConstant.y) annotation(
+          Line(points = {{110, 66}, {-4, 66}, {-4, 24}}, color = {255, 127, 0}));
+        annotation(
+          Icon(coordinateSystem(preserveAspectRatio = false)),
+          Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}})),
+          experiment(StopTime = 300, StartTime = 0, Tolerance = 1e-06, Interval = 0.6));
+      end Test3;
+
+      package testConfigurationDesk
+        model TurbineGeneratorTest1
+          parameter Real TestMotorTorqueAmplitude = 8 "Torque signal sendt to the test motor";
+          parameter Real TestMotorTorqueStartTime = 2 "Ramp up start time";
+          parameter Real TestMotorTorqueDuration = 3 "Duration of the ramp up";
+          parameter Real TestMotorTorqueOffset = 0 "Initial torque value of the test motot";
+          parameter Real ServoMotorVoltageAmplitude = 2.5 "Voltage signal sendt to the Servomotor";
+          parameter Real ServoMotorVoltageStartTime = 1 "Ramp up start time";
+          parameter Real ServoMotorVoltageDuration = 0 "Duration of the ram up";
+          parameter Real ServoMotorVoltageOffset = 0 "Initial voltage value of the servo motor";
+          parameter Real ServoMotorTorqueAmplitude = 0.05 "Start torque for the servo motor";
+          parameter Real ServoMotorTorqueStartTime = 1 "Ramp up start time";
+          parameter Real ServoMotorTorqueDuration = 0 "Duration of the ramp up";
+          parameter Real ServoMotorTorqueOffset = 0 "Initial torque value of the servo motor";
+          Modelica.Blocks.Interfaces.IntegerOutput TM_Start_Stop_Out "Connector of Integer output signal" annotation(
+            Placement(visible = true, transformation(origin = {0, 36}, extent = {{100, 20}, {120, 40}}, rotation = 0), iconTransformation(origin = {0, 40}, extent = {{100, 20}, {120, 40}}, rotation = 0)));
+          Modelica.Blocks.Interfaces.RealOutput TM_Torque_Out "Connector of Real output signal" annotation(
+            Placement(visible = true, transformation(origin = {0, 36}, extent = {{100, 40}, {120, 60}}, rotation = 0), iconTransformation(origin = {0, 40}, extent = {{100, 40}, {120, 60}}, rotation = 0)));
+          Modelica.Blocks.Math.BooleanToInteger booleanToInteger1 annotation(
+            Placement(visible = true, transformation(origin = {79, 69}, extent = {{-7, -7}, {7, 7}}, rotation = 0)));
+          Modelica.Blocks.Sources.Ramp TestMotortorque(height = TestMotorTorqueAmplitude, duration = TestMotorTorqueDuration, offset = TestMotorTorqueOffset, startTime = TestMotorTorqueStartTime) annotation(
+            Placement(visible = true, transformation(origin = {54, 34}, extent = {{-80, 40}, {-60, 60}}, rotation = 0)));
+          Modelica.Blocks.Logical.And and1 annotation(
+            Placement(visible = true, transformation(origin = {58, -48}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
+          Modelica.Blocks.Interfaces.RealOutput SM_Speed_Out annotation(
+            Placement(visible = true, transformation(origin = {0, 2}, extent = {{100, -98}, {120, -78}}, rotation = 0), iconTransformation(origin = {0, 0}, extent = {{100, -98}, {120, -78}}, rotation = 0)));
+          Modelica.Blocks.Math.BooleanToInteger booleanToInteger annotation(
+            Placement(visible = true, transformation(origin = {80, -48}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
+          Modelica.Blocks.Logical.GreaterThreshold greaterThreshold1 annotation(
+            Placement(visible = true, transformation(origin = {29, -37}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+          Modelica.Blocks.Logical.GreaterThreshold greaterThreshold2 annotation(
+            Placement(visible = true, transformation(origin = {32, -54}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
+          Modelica.Blocks.Interfaces.RealOutput SM_Start_Torque_Out annotation(
+            Placement(visible = true, transformation(origin = {0, 2}, extent = {{100, -80}, {120, -60}}, rotation = 0), iconTransformation(origin = {0, 0}, extent = {{100, -80}, {120, -60}}, rotation = 0)));
+          Modelica.Blocks.Interfaces.IntegerOutput SM_Start_Stop_Out annotation(
+            Placement(visible = true, transformation(origin = {0, 2}, extent = {{100, -60}, {120, -40}}, rotation = 0), iconTransformation(origin = {0, 0}, extent = {{100, -60}, {120, -40}}, rotation = 0)));
+          Modelica.Blocks.Interfaces.IntegerOutput TM_Speed_Torque_Out annotation(
+            Placement(visible = true, transformation(origin = {110, 42}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+          Modelica.Blocks.Sources.Ramp ServoMotorTorque(duration = ServoMotorTorqueDuration, height = ServoMotorTorqueAmplitude, offset = ServoMotorTorqueOffset, startTime = ServoMotorTorqueStartTime) annotation(
+            Placement(visible = true, transformation(origin = {-9, -67}, extent = {{-7, -7}, {7, 7}}, rotation = 0)));
+          Modelica.Blocks.Sources.Ramp ServoMotorVoltage(duration = ServoMotorVoltageDuration, height = ServoMotorVoltageAmplitude, offset = ServoMotorVoltageOffset, startTime = ServoMotorVoltageStartTime) annotation(
+            Placement(visible = true, transformation(origin = {32, -134}, extent = {{-80, 40}, {-60, 60}}, rotation = 0)));
+          Modelica.Blocks.Interfaces.RealInput TM_M_Speed_In annotation(
+            Placement(visible = true, transformation(origin = {-120, 88}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-120, 80}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+          Modelica.Blocks.Math.Product TM_Voltage annotation(
+            Placement(visible = true, transformation(origin = {-48, 88}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
+          Modelica.Blocks.Math.Product TM_Speed annotation(
+            Placement(visible = true, transformation(origin = {-62, 62}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
+          Modelica.Blocks.Sources.Constant Voltage_Conversion(k = 5) annotation(
+            Placement(visible = true, transformation(origin = {-65, 83}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+          Modelica.Blocks.Math.Gain SM_Voltage_Conversion(k = 405) annotation(
+            Placement(visible = true, transformation(origin = {-70, 20}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+          Modelica.Blocks.Math.Gain SM_Torque_Conversion(k = 1) annotation(
+            Placement(visible = true, transformation(origin = {-48, -20}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+          Modelica.Blocks.Interfaces.RealInput SM_M_Speed_In annotation(
+            Placement(visible = true, transformation(origin = {-120, 20}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-120, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+          Modelica.Blocks.Interfaces.RealInput SM_M_Torque_In annotation(
+            Placement(visible = true, transformation(origin = {-120, -20}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-120, -80}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+          Modelica.Blocks.Interfaces.IntegerOutput TM_Forward_Reverse_Out annotation(
+            Placement(visible = true, transformation(origin = {110, 20}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+          Modelica.Blocks.Sources.Constant Speed_Conversion(k = 455) annotation(
+            Placement(visible = true, transformation(origin = {-92, 58}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
+          Modelica.Blocks.Nonlinear.Limiter div0protect(uMax = Modelica.Constants.inf, uMin = Modelica.Constants.small) annotation(
+            Placement(visible = true, transformation(origin = {-80, -20}, extent = {{6, 6}, {-6, -6}}, rotation = -180)));
+          Modelica.Blocks.Logical.GreaterThreshold greaterThreshold annotation(
+            Placement(visible = true, transformation(origin = {49, 69}, extent = {{-7, -7}, {7, 7}}, rotation = 0)));
+          Modelica.Blocks.Logical.Switch switch1 annotation(
+            Placement(visible = true, transformation(origin = {20, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+          Modelica.Blocks.Sources.Ramp ramp1(duration = TestMotorTorqueDuration, height = -TestMotorTorqueAmplitude*0.5, offset = TestMotorTorqueAmplitude, startTime = 30) annotation(
+            Placement(visible = true, transformation(origin = {-22, 18}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+          Modelica.Blocks.Logical.GreaterThreshold greaterThreshold3 annotation(
+            Placement(visible = true, transformation(origin = {-14, 48}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        equation
+          connect(TM_Start_Stop_Out, booleanToInteger1.y) annotation(
+            Line(points = {{110, 66}, {98.5, 66}, {98.5, 69}, {87, 69}}, color = {255, 127, 0}));
+          connect(and1.u1, greaterThreshold1.y) annotation(
+            Line(points = {{51, -48}, {51, -37}, {34.5, -37}}, color = {255, 0, 255}));
+          connect(booleanToInteger.u, and1.y) annotation(
+            Line(points = {{73, -48}, {65, -48}}, color = {255, 0, 255}));
+          connect(and1.u2, greaterThreshold2.y) annotation(
+            Line(points = {{51, -53}, {36, -53}, {36, -54}, {39, -54}}, color = {255, 0, 255}));
+          connect(booleanToInteger.y, SM_Start_Stop_Out) annotation(
+            Line(points = {{87, -48}, {110, -48}}, color = {255, 127, 0}));
+          connect(booleanToInteger1.y, TM_Speed_Torque_Out) annotation(
+            Line(points = {{87, 69}, {87, 42}, {110, 42}}, color = {255, 127, 0}));
+          connect(ServoMotorTorque.y, SM_Start_Torque_Out) annotation(
+            Line(points = {{-1, -67}, {53.5, -67}, {53.5, -68}, {110, -68}}, color = {0, 0, 127}));
+          connect(greaterThreshold2.u, ServoMotorTorque.y) annotation(
+            Line(points = {{25, -54}, {2, -54}, {2, -67}, {-1, -67}}, color = {0, 0, 127}));
+          connect(ServoMotorVoltage.y, SM_Speed_Out) annotation(
+            Line(points = {{-27, -84}, {41.5, -84}, {41.5, -86}, {110, -86}}, color = {0, 0, 127}));
+          connect(ServoMotorVoltage.y, greaterThreshold1.u) annotation(
+            Line(points = {{-27, -84}, {-27, -50}, {-6, -50}, {-6, -37}, {23, -37}}, color = {0, 0, 127}));
+          connect(TM_Voltage.u1, TM_M_Speed_In) annotation(
+            Line(points = {{-55, 92}, {-85.5, 92}, {-85.5, 88}, {-120, 88}}, color = {0, 0, 127}));
+          connect(TM_Speed.u1, TM_M_Speed_In) annotation(
+            Line(points = {{-69, 66}, {-75, 66}, {-75, 88}, {-120, 88}}, color = {0, 0, 127}));
+          connect(Voltage_Conversion.y, TM_Voltage.u2) annotation(
+            Line(points = {{-59.5, 83}, {-59.5, 84}, {-55, 84}}, color = {0, 0, 127}));
+          connect(SM_Voltage_Conversion.u, SM_M_Speed_In) annotation(
+            Line(points = {{-82, 20}, {-120, 20}}, color = {0, 0, 127}));
+          connect(booleanToInteger1.y, TM_Forward_Reverse_Out) annotation(
+            Line(points = {{87, 69}, {86, 69}, {86, 20}, {110, 20}}, color = {255, 127, 0}));
+          connect(Speed_Conversion.y, TM_Speed.u2) annotation(
+            Line(points = {{-85, 58}, {-69, 58}}, color = {0, 0, 127}));
+          connect(div0protect.u, SM_M_Torque_In) annotation(
+            Line(points = {{-88, -20}, {-120, -20}}, color = {0, 0, 127}));
+          connect(SM_Torque_Conversion.u, div0protect.y) annotation(
+            Line(points = {{-60, -20}, {-74, -20}}, color = {0, 0, 127}));
+          connect(booleanToInteger1.u, greaterThreshold.y) annotation(
+            Line(points = {{71, 69}, {57, 69}}, color = {255, 0, 255}));
+          connect(switch1.u3, ramp1.y) annotation(
+            Line(points = {{8, 42}, {7.75, 42}, {7.75, 34}, {7.5, 34}, {7.5, 22}, {11, 22}, {11, 19}, {-11, 19}, {-11, 18}}, color = {0, 0, 127}));
+          connect(switch1.y, greaterThreshold.u) annotation(
+            Line(points = {{32, 50}, {32, 70}, {39, 70}, {39, 65.5}, {41, 65.5}, {41, 69}}, color = {0, 0, 127}));
+          connect(switch1.y, TM_Torque_Out) annotation(
+            Line(points = {{32, 50}, {30, 50}, {30, 86}, {110, 86}}, color = {0, 0, 127}));
+          connect(switch1.u1, TestMotortorque.y) annotation(
+            Line(points = {{8, 58}, {6, 58}, {6, 84}, {-4, 84}}, color = {0, 0, 127}));
+          connect(greaterThreshold3.y, switch1.u2) annotation(
+            Line(points = {{-2, 48}, {8, 48}, {8, 50}}, color = {255, 0, 255}));
+          connect(greaterThreshold3.u, TestMotortorque.y) annotation(
+            Line(points = {{-26, 48}, {-36, 48}, {-36, 66}, {-4, 66}, {-4, 84}}, color = {0, 0, 127}));
+          annotation(
+            Icon(coordinateSystem(preserveAspectRatio = false)),
+            Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}})),
+            experiment(StopTime = 300, StartTime = 0, Tolerance = 1e-06, Interval = 0.6));
+        end TurbineGeneratorTest1;
+
+        model TestTurbineGenerator
+          parameter Real TestMotorTorqueAmplitude = 8 "Torque signal sendt to the test motor";
+          parameter Real TestMotorTorqueStartTime = 11 "Ramp up start time";
+          parameter Real TestMotorTorqueDuration = 5 "Duration of the ramp up";
+          parameter Real TestMotorTorqueOffset = 0 "Initial torque value of the test motot";
+          parameter Real ServoMotorVoltageAmplitude = 2.5 "Voltage signal sendt to the Servomotor";
+          parameter Real ServoMotorVoltageStartTime = 1 "Ramp up start time";
+          parameter Real ServoMotorVoltageDuration = 0 "Duration of the ram up";
+          parameter Real ServoMotorVoltageOffset = 0 "Initial voltage value of the servo motor";
+          parameter Real ServoMotorTorqueAmplitude = 0.05 "Start torque for the servo motor";
+          parameter Real ServoMotorTorqueStartTime = 1 "Ramp up start time";
+          parameter Real ServoMotorTorqueDuration = 0 "Duration of the ramp up";
+          parameter Real ServoMotorTorqueOffset = 0 "Initial torque value of the servo motor";
+          Modelica.Blocks.Interfaces.IntegerOutput TM_Start_Stop_Out "Connector of Integer output signal" annotation(
+            Placement(visible = true, transformation(origin = {0, 36}, extent = {{100, 20}, {120, 40}}, rotation = 0), iconTransformation(origin = {0, 40}, extent = {{100, 20}, {120, 40}}, rotation = 0)));
+          Modelica.Blocks.Interfaces.RealOutput TM_Torque_Out "Connector of Real output signal" annotation(
+            Placement(visible = true, transformation(origin = {0, 36}, extent = {{100, 40}, {120, 60}}, rotation = 0), iconTransformation(origin = {0, 40}, extent = {{100, 40}, {120, 60}}, rotation = 0)));
+          Modelica.Blocks.Math.BooleanToInteger booleanToInteger1 annotation(
+            Placement(visible = true, transformation(origin = {0, 36}, extent = {{66, 20}, {86, 40}}, rotation = 0)));
+          Modelica.Blocks.Sources.Ramp TestMotortorque(height = TestMotorTorqueAmplitude, duration = TestMotorTorqueDuration, offset = TestMotorTorqueOffset, startTime = TestMotorTorqueStartTime) annotation(
+            Placement(visible = true, transformation(origin = {84, 36}, extent = {{-80, 40}, {-60, 60}}, rotation = 0)));
+          Modelica.Blocks.Logical.GreaterThreshold greaterThreshold annotation(
+            Placement(visible = true, transformation(origin = {46, 66}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+          Modelica.Blocks.Logical.And and1 annotation(
+            Placement(visible = true, transformation(origin = {10, 2}, extent = {{28, -60}, {48, -40}}, rotation = 0)));
+          Modelica.Blocks.Interfaces.RealOutput SM_Speed_Out annotation(
+            Placement(visible = true, transformation(origin = {0, 2}, extent = {{100, -98}, {120, -78}}, rotation = 0), iconTransformation(origin = {0, 0}, extent = {{100, -98}, {120, -78}}, rotation = 0)));
+          Modelica.Blocks.Math.BooleanToInteger booleanToInteger annotation(
+            Placement(visible = true, transformation(origin = {10, 2}, extent = {{60, -60}, {80, -40}}, rotation = 0)));
+          Modelica.Blocks.Logical.GreaterThreshold greaterThreshold1 annotation(
+            Placement(visible = true, transformation(origin = {28, 8}, extent = {{-14, -34}, {6, -14}}, rotation = 0)));
+          Modelica.Blocks.Logical.GreaterThreshold greaterThreshold2 annotation(
+            Placement(visible = true, transformation(origin = {20, 4}, extent = {{-14, -64}, {6, -44}}, rotation = 0)));
+          Modelica.Blocks.Interfaces.RealOutput SM_Start_Torque_Out annotation(
+            Placement(visible = true, transformation(origin = {0, 2}, extent = {{100, -80}, {120, -60}}, rotation = 0), iconTransformation(origin = {0, 0}, extent = {{100, -80}, {120, -60}}, rotation = 0)));
+          Modelica.Blocks.Interfaces.IntegerOutput SM_Start_Stop_Out annotation(
+            Placement(visible = true, transformation(origin = {0, 2}, extent = {{100, -60}, {120, -40}}, rotation = 0), iconTransformation(origin = {0, 0}, extent = {{100, -60}, {120, -40}}, rotation = 0)));
+          Modelica.Blocks.Interfaces.IntegerOutput TM_Speed_Torque_Out annotation(
+            Placement(visible = true, transformation(origin = {110, 42}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+          Modelica.Blocks.Sources.Ramp ServoMotorTorque(duration = ServoMotorTorqueDuration, height = ServoMotorTorqueAmplitude, offset = ServoMotorTorqueOffset, startTime = ServoMotorTorqueStartTime) annotation(
+            Placement(visible = true, transformation(origin = {60, -120}, extent = {{-80, 40}, {-60, 60}}, rotation = 0)));
+          Modelica.Blocks.Sources.Ramp ServoMotorVoltage(duration = ServoMotorVoltageDuration, height = ServoMotorVoltageAmplitude, offset = ServoMotorVoltageOffset, startTime = ServoMotorVoltageStartTime) annotation(
+            Placement(visible = true, transformation(origin = {32, -134}, extent = {{-80, 40}, {-60, 60}}, rotation = 0)));
+          Modelica.Blocks.Interfaces.RealInput TM_M_Speed_In annotation(
+            Placement(visible = true, transformation(origin = {-120, 88}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-120, 80}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+          Modelica.Blocks.Math.Product TM_Voltage annotation(
+            Placement(visible = true, transformation(origin = {-34, 88}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
+          Modelica.Blocks.Math.Product TM_Speed annotation(
+            Placement(visible = true, transformation(origin = {-14, 68}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+          Modelica.Blocks.Sources.Constant Voltage_Conversion(k = 5) annotation(
+            Placement(visible = true, transformation(origin = {-65, 83}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+          Modelica.Blocks.Math.Gain SM_Voltage_Conversion(k = 405) annotation(
+            Placement(visible = true, transformation(origin = {-70, 20}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+          Modelica.Blocks.Math.Gain SM_Torque_Conversion(k = 1) annotation(
+            Placement(visible = true, transformation(origin = {-48, -20}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+          Modelica.Blocks.Interfaces.RealInput SM_M_Speed_In annotation(
+            Placement(visible = true, transformation(origin = {-120, 20}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-120, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+          Modelica.Blocks.Interfaces.RealInput SM_M_Torque_In annotation(
+            Placement(visible = true, transformation(origin = {-120, -20}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-120, -80}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+          Modelica.Blocks.Interfaces.IntegerOutput TM_Forward_Reverse_Out annotation(
+            Placement(visible = true, transformation(origin = {110, 20}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+          Modelica.Blocks.Sources.Constant Speed_Conversion(k = 455) annotation(
+            Placement(visible = true, transformation(origin = {-58, 54}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        equation
+          connect(TM_Start_Stop_Out, booleanToInteger1.y) annotation(
+            Line(points = {{110, 66}, {87, 66}}, color = {255, 127, 0}));
+          connect(TestMotortorque.y, TM_Torque_Out) annotation(
+            Line(points = {{25, 86}, {110, 86}}, color = {0, 0, 127}));
+          connect(booleanToInteger1.u, greaterThreshold.y) annotation(
+            Line(points = {{64, 66}, {57, 66}}, color = {255, 0, 255}));
+          connect(greaterThreshold.u, TestMotortorque.y) annotation(
+            Line(points = {{34, 66}, {25, 66}, {25, 86}}, color = {0, 0, 127}));
+          connect(and1.u1, greaterThreshold1.y) annotation(
+            Line(points = {{36, -48}, {36, -16}, {35, -16}}, color = {255, 0, 255}));
+          connect(booleanToInteger.u, and1.y) annotation(
+            Line(points = {{68, -48}, {59, -48}}, color = {255, 0, 255}));
+          connect(and1.u2, greaterThreshold2.y) annotation(
+            Line(points = {{36, -56}, {31.5, -56}, {31.5, -50}, {27, -50}}, color = {255, 0, 255}));
+          connect(booleanToInteger.y, SM_Start_Stop_Out) annotation(
+            Line(points = {{91, -48}, {110, -48}}, color = {255, 127, 0}));
+          connect(booleanToInteger1.y, TM_Speed_Torque_Out) annotation(
+            Line(points = {{87, 66}, {87, 42}, {110, 42}}, color = {255, 127, 0}));
+          connect(ServoMotorTorque.y, SM_Start_Torque_Out) annotation(
+            Line(points = {{1, -70}, {47.5, -70}, {47.5, -68}, {110, -68}}, color = {0, 0, 127}));
+          connect(greaterThreshold2.u, ServoMotorTorque.y) annotation(
+            Line(points = {{4, -50}, {2, -50}, {2, -70}, {1, -70}}, color = {0, 0, 127}));
+          connect(ServoMotorVoltage.y, SM_Speed_Out) annotation(
+            Line(points = {{-27, -84}, {41.5, -84}, {41.5, -86}, {110, -86}}, color = {0, 0, 127}));
+          connect(ServoMotorVoltage.y, greaterThreshold1.u) annotation(
+            Line(points = {{-27, -84}, {-27, -50}, {-6, -50}, {-6, -16}, {12, -16}}, color = {0, 0, 127}));
+          connect(TM_Voltage.u1, TM_M_Speed_In) annotation(
+            Line(points = {{-41, 92}, {-85.5, 92}, {-85.5, 88}, {-120, 88}}, color = {0, 0, 127}));
+          connect(TM_Speed.u1, TM_M_Speed_In) annotation(
+            Line(points = {{-26, 74}, {-75, 74}, {-75, 88}, {-120, 88}}, color = {0, 0, 127}));
+          connect(Voltage_Conversion.y, TM_Voltage.u2) annotation(
+            Line(points = {{-59.5, 83}, {-59.5, 84}, {-41, 84}}, color = {0, 0, 127}));
+          connect(SM_Voltage_Conversion.u, SM_M_Speed_In) annotation(
+            Line(points = {{-82, 20}, {-120, 20}}, color = {0, 0, 127}));
+          connect(booleanToInteger1.y, TM_Forward_Reverse_Out) annotation(
+            Line(points = {{88, 66}, {86, 66}, {86, 20}, {110, 20}}, color = {255, 127, 0}));
+          connect(Speed_Conversion.y, TM_Speed.u2) annotation(
+            Line(points = {{-47, 54}, {-38.5, 54}, {-38.5, 62}, {-26, 62}}, color = {0, 0, 127}));
+          connect(SM_M_Torque_In, SM_Torque_Conversion.u) annotation(
+            Line(points = {{-120, -20}, {-60, -20}}, color = {0, 0, 127}));
+          annotation(
+            Icon(coordinateSystem(preserveAspectRatio = false)),
+            Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}})),
+            experiment(StopTime = 300, StartTime = 0, Tolerance = 1e-06, Interval = 0.6));
+        end TestTurbineGenerator;
+      end testConfigurationDesk;
     end MotorTest;
 
     package WaterModel
@@ -1676,14 +2060,14 @@ package TestPackage
           Placement(visible = true, transformation(origin = {26, 40}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
         Modelica.Blocks.Interfaces.RealOutput Torque_Out annotation(
           Placement(visible = true, transformation(origin = {110, 84}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {140, 42}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Blocks.Logical.Greater greater annotation(
-          Placement(visible = true, transformation(origin = {-52, -62}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
         Modelica.Blocks.Sources.Constant const1(k = 6) annotation(
           Placement(visible = true, transformation(origin = {-16, -54}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Blocks.Sources.Constant constant2(k = 6) annotation(
-          Placement(visible = true, transformation(origin = {-86, -82}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
         Modelica.Blocks.Logical.Switch switch1 annotation(
           Placement(visible = true, transformation(origin = {34, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Logical.Greater greater annotation(
+          Placement(visible = true, transformation(origin = {-52, -62}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Sources.Constant constant2(k = 6) annotation(
+          Placement(visible = true, transformation(origin = {-86, -82}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       equation
         connect(discharge.o, tail.o) annotation(
           Line(points = {{58, 0}, {64, 0}}, color = {28, 108, 200}));
@@ -1711,14 +2095,14 @@ package TestPackage
           Line(points = {{37, 32}, {75, 32}, {75, 84}, {110, 84}}, color = {0, 0, 127}));
         connect(simpleGen.Pload, turbine1.P_out) annotation(
           Line(points = {{28, 80}, {28, 90}, {46, 90}, {46, 18}, {28, 18}, {28, 12}, {26, 12}}, color = {0, 0, 127}));
-        connect(constant2.y, greater.u2) annotation(
-          Line(points = {{-74, -82}, {-64, -82}, {-64, -70}}, color = {0, 0, 127}));
         connect(const1.y, switch1.u1) annotation(
           Line(points = {{-5, -54}, {9.5, -54}, {9.5, -58}, {22, -58}}, color = {0, 0, 127}));
-        connect(greater.y, switch1.u2) annotation(
-          Line(points = {{-40, -62}, {-32, -62}, {-32, -66}, {22, -66}}, color = {255, 0, 255}));
         connect(switch1.y, turbine1.w_in) annotation(
           Line(points = {{46, -66}, {60, -66}, {60, -22}, {14, -22}, {14, -12}}, color = {0, 0, 127}));
+        connect(greater.y, switch1.u2) annotation(
+          Line(points = {{-40, -62}, {-32, -62}, {-32, -66}, {22, -66}}, color = {255, 0, 255}));
+        connect(constant2.y, greater.u2) annotation(
+          Line(points = {{-74, -82}, {-64, -82}, {-64, -70}}, color = {0, 0, 127}));
         annotation(
           experiment(StopTime = 1000, StartTime = 0, Tolerance = 1e-06, Interval = 2),
           Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}})));
@@ -1854,7 +2238,7 @@ package TestPackage
         OpenHPL.Waterway.Reservoir reservoir(h_0 = 48, useInflow = false, useLevel = true) annotation(
           Placement(visible = true, transformation(origin = {-80, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
         Modelica.Blocks.Sources.Constant const(k = 48) annotation(
-          Placement(visible = true, transformation(origin = {-80, -12}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+          Placement(visible = true, transformation(origin = {-78, 0}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
         OpenHPL.Waterway.SurgeTank surgeTank annotation(
           Placement(visible = true, transformation(origin = {-30, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
         Modelica.Blocks.Sources.Constant constant1(k = 5) annotation(
@@ -1865,10 +2249,10 @@ package TestPackage
           Placement(visible = true, transformation(origin = {60, 66}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
         Modelica.Blocks.Interfaces.RealInput u annotation(
           Placement(visible = true, transformation(origin = {-126, -38}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-122, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-        Modelica.Blocks.Math.Add add annotation(
-          Placement(visible = true, transformation(origin = {-32, -44}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Blocks.Sources.Step step(height = -5.99, offset = 6, startTime = 10) annotation(
-          Placement(visible = true, transformation(origin = {-76, -78}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Nonlinear.Limiter div0protect(uMax = Modelica.Constants.inf, uMin = Modelica.Constants.small) annotation(
+          Placement(visible = true, transformation(origin = {46, 34}, extent = {{6, -6}, {-6, 6}}, rotation = -90)));
+        Modelica.Blocks.Sources.Constant const1(k = 6) annotation(
+          Placement(visible = true, transformation(origin = {70, -72}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
       equation
         connect(discharge.o, tail.o) annotation(
           Line(points = {{58, 0}, {64, 0}}, color = {28, 108, 200}));
@@ -1881,7 +2265,7 @@ package TestPackage
         connect(reservoir.o, intake.i) annotation(
           Line(points = {{-70, 30}, {-66, 30}}, color = {0, 128, 255}));
         connect(const.y, reservoir.level) annotation(
-          Line(points = {{-91, -12}, {-98, -12}, {-98, 36}, {-92, 36}}, color = {0, 0, 127}));
+          Line(points = {{-89, 0}, {-98, 0}, {-98, 36}, {-92, 36}}, color = {0, 0, 127}));
         connect(intake.o, surgeTank.i) annotation(
           Line(points = {{-46, 30}, {-40, 30}}, color = {0, 128, 255}));
         connect(surgeTank.o, penstock.i) annotation(
@@ -1892,14 +2276,12 @@ package TestPackage
           Line(points = {{72, 66}, {84, 66}, {84, 84}, {110, 84}}, color = {0, 0, 127}));
         connect(turbine1.P_out, division.u1) annotation(
           Line(points = {{26, 12}, {30, 12}, {30, 72}, {48, 72}}, color = {0, 0, 127}));
-        connect(add.y, turbine1.w_in) annotation(
-          Line(points = {{-20, -44}, {14, -44}, {14, -12}}, color = {0, 0, 127}));
-        connect(add.y, division.u2) annotation(
-          Line(points = {{-20, -44}, {36, -44}, {36, 60}, {48, 60}}, color = {0, 0, 127}));
-        connect(add.u1, u) annotation(
-          Line(points = {{-44, -38}, {-126, -38}}, color = {0, 0, 127}));
-        connect(step.y, add.u2) annotation(
-          Line(points = {{-64, -78}, {-44, -78}, {-44, -50}}, color = {0, 0, 127}));
+        connect(division.u2, div0protect.y) annotation(
+          Line(points = {{48, 60}, {46, 60}, {46, 40}}, color = {0, 0, 127}));
+        connect(div0protect.u, u) annotation(
+          Line(points = {{46, 26}, {48, 26}, {48, -38}, {-126, -38}}, color = {0, 0, 127}));
+        connect(const1.y, turbine1.w_in) annotation(
+          Line(points = {{60, -72}, {14, -72}, {14, -12}}, color = {0, 0, 127}));
         annotation(
           experiment(StopTime = 1000, StartTime = 0, Tolerance = 1e-06, Interval = 2),
           Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}})));
@@ -1908,23 +2290,51 @@ package TestPackage
       model ttt
         TestPackage.ActiveWork.WaterModel.TestSimpleHPL2 testSimpleHPL2 annotation(
           Placement(visible = true, transformation(origin = {-12, 72}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        TestPackage.ActiveWork.WaterModel.converter Controller annotation(
-          Placement(visible = true, transformation(origin = {60, 60}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
         Modelica.Blocks.Math.Division division annotation(
           Placement(visible = true, transformation(origin = {22, 66}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
         Modelica.Blocks.Sources.Constant constant1(k = 100000) annotation(
           Placement(visible = true, transformation(origin = {-48, 44}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Blocks.Sources.Step step(height = 106.0287, startTime = 0.00001) annotation(
-          Placement(visible = true, transformation(origin = {-76, 84}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Interfaces.RealOutput y annotation(
+          Placement(visible = true, transformation(origin = {124, 58}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {124, 58}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Logical.LessEqualThreshold lessEqualThreshold(threshold = 10) annotation(
+          Placement(visible = true, transformation(origin = {-62, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Math.BooleanToReal booleanToReal annotation(
+          Placement(visible = true, transformation(origin = {20, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Math.Product product annotation(
+          Placement(visible = true, transformation(origin = {60, -24}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Sources.Constant const(k = -10) annotation(
+          Placement(visible = true, transformation(origin = {-84, -70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Logical.And and1 annotation(
+          Placement(visible = true, transformation(origin = {-20, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Logical.GreaterEqual greaterEqual annotation(
+          Placement(visible = true, transformation(origin = {-48, -56}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Interfaces.RealInput u annotation(
+          Placement(visible = true, transformation(origin = {-126, 72}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-94, 64}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
       equation
         connect(constant1.y, division.u2) annotation(
           Line(points = {{-37, 44}, {9, 44}, {9, 60}}, color = {0, 0, 127}));
         connect(division.u1, testSimpleHPL2.Torque_Out) annotation(
           Line(points = {{10, 72}, {0, 72}}, color = {0, 0, 127}));
-        connect(division.y, Controller.u) annotation(
-          Line(points = {{33, 66}, {49, 66}}, color = {0, 0, 127}));
-        connect(step.y, testSimpleHPL2.u) annotation(
-          Line(points = {{-65, 84}, {-37, 84}, {-37, 66}, {-25, 66}}, color = {0, 0, 127}));
+        connect(booleanToReal.y, product.u2) annotation(
+          Line(points = {{31, -30}, {47, -30}}, color = {0, 0, 127}));
+        connect(const.y, greaterEqual.u2) annotation(
+          Line(points = {{-73, -70}, {-71.5, -70}, {-71.5, -64}, {-60, -64}, {-60, -64}}, color = {0, 0, 127}));
+        connect(lessEqualThreshold.y, and1.u1) annotation(
+          Line(points = {{-51, -30}, {-32, -30}}, color = {255, 0, 255}));
+        connect(greaterEqual.y, and1.u2) annotation(
+          Line(points = {{-37, -56}, {-32, -56}, {-32, -38}}, color = {255, 0, 255}));
+        connect(and1.y, booleanToReal.u) annotation(
+          Line(points = {{-9, -30}, {7, -30}}, color = {255, 0, 255}));
+        connect(product.y, y) annotation(
+          Line(points = {{72, -24}, {78, -24}, {78, 58}, {124, 58}}, color = {0, 0, 127}));
+        connect(product.u1, division.y) annotation(
+          Line(points = {{48, -18}, {44, -18}, {44, 66}, {34, 66}}, color = {0, 0, 127}));
+        connect(lessEqualThreshold.u, division.y) annotation(
+          Line(points = {{-74, -30}, {-94, -30}, {-94, 16}, {34, 16}, {34, 66}}, color = {0, 0, 127}));
+        connect(greaterEqual.u1, division.y) annotation(
+          Line(points = {{-60, -56}, {-92, -56}, {-92, 16}, {34, 16}, {34, 66}}, color = {0, 0, 127}));
+        connect(testSimpleHPL2.u, u) annotation(
+          Line(points = {{-24, 72}, {-126, 72}}, color = {0, 0, 127}));
         annotation(
           experiment(StartTime = 0, StopTime = 1000, Tolerance = 1e-6, Interval = 0.2));
       end ttt;
@@ -2084,9 +2494,9 @@ package TestPackage
           Placement(visible = true, transformation(origin = {104, -136}, extent = {{-80, 40}, {-60, 60}}, rotation = 0)));
         Modelica.Blocks.Logical.GreaterThreshold greaterThreshold1 annotation(
           Placement(visible = true, transformation(origin = {62, -6}, extent = {{-14, -34}, {6, -14}}, rotation = 0)));
-  Modelica.Blocks.Math.Division division2 annotation(
+        Modelica.Blocks.Math.Division division2 annotation(
           Placement(visible = true, transformation(origin = {-62, -48}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Sources.Constant constant4(k = 2*3.14159265/60) annotation(
+        Modelica.Blocks.Sources.Constant constant4(k = 2*3.14159265/60) annotation(
           Placement(visible = true, transformation(origin = {-102, -70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       equation
         connect(constant2.y, tail.level) annotation(
@@ -2165,19 +2575,19 @@ package TestPackage
           Line(points = {{260, -72}, {128, -72}, {128, -94}, {46, -94}, {46, -86}}, color = {0, 0, 127}));
         connect(booleanToInteger1.y, SM_Start_Stop_Out) annotation(
           Line(points = {{160, -30}, {180, -30}, {180, 48}, {260, 48}}, color = {255, 127, 0}));
-  connect(constant1.y, division.u2) annotation(
+        connect(constant1.y, division.u2) annotation(
           Line(points = {{-102, 26}, {-22, 26}, {-22, 64}, {-12, 64}}, color = {0, 0, 127}));
-  connect(add.y, division2.u1) annotation(
+        connect(add.y, division2.u1) annotation(
           Line(points = {{-98, -22}, {-84, -22}, {-84, -42}, {-74, -42}}, color = {0, 0, 127}));
-  connect(constant4.y, division2.u2) annotation(
+        connect(constant4.y, division2.u2) annotation(
           Line(points = {{-90, -70}, {-74, -70}, {-74, -54}}, color = {0, 0, 127}));
-  connect(division2.y, division1.u2) annotation(
+        connect(division2.y, division1.u2) annotation(
           Line(points = {{-50, -48}, {-52, -48}, {-52, 62}}, color = {0, 0, 127}));
         annotation(
           experiment(StartTime = 0, StopTime = 1000, Tolerance = 1e-06, Interval = 0.2),
           Diagram(coordinateSystem(extent = {{-200, 100}, {220, -140}})));
       end HydroPowerModel1;
-      
+
       model HydroPowerModel2
         parameter Real ServoMotorVoltageAmplitude = 2.5 "Voltage signal sendt to the Servomotor";
         parameter Real ServoMotorVoltageStartTime = 1 "Ramp up start time";
@@ -2265,11 +2675,11 @@ package TestPackage
           Placement(visible = true, transformation(origin = {104, -136}, extent = {{-80, 40}, {-60, 60}}, rotation = 0)));
         Modelica.Blocks.Logical.GreaterThreshold greaterThreshold1 annotation(
           Placement(visible = true, transformation(origin = {62, -6}, extent = {{-14, -34}, {6, -14}}, rotation = 0)));
-  Modelica.Blocks.Sources.Step step1(height = 2.5, offset = 0, startTime = 0.001) annotation(
+        Modelica.Blocks.Sources.Step step1(height = 2.5, offset = 0, startTime = 0.001) annotation(
           Placement(visible = true, transformation(origin = {-188, -108}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Math.Division division2 annotation(
+        Modelica.Blocks.Math.Division division2 annotation(
           Placement(visible = true, transformation(origin = {-74, -42}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Sources.Constant constant4(k = 2*3.14159265/60) annotation(
+        Modelica.Blocks.Sources.Constant constant4(k = 2*3.14159265/60) annotation(
           Placement(visible = true, transformation(origin = {-134, -104}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       equation
         connect(constant2.y, tail.level) annotation(
@@ -2346,55 +2756,146 @@ package TestPackage
           Line(points = {{160, -30}, {180, -30}, {180, 48}, {260, 48}}, color = {255, 127, 0}));
         connect(constant1.y, division.u2) annotation(
           Line(points = {{-102, 26}, {-22, 26}, {-22, 64}, {-12, 64}}, color = {0, 0, 127}));
-  connect(step1.y, Power.u1) annotation(
+        connect(step1.y, Power.u1) annotation(
           Line(points = {{-176, -108}, {-172, -108}, {-172, -66}, {-198, -66}, {-198, -36}, {-190, -36}}, color = {0, 0, 127}));
-  connect(step1.y, Ao1.u) annotation(
+        connect(step1.y, Ao1.u) annotation(
           Line(points = {{-176, -108}, {-162, -108}, {-162, -14}}, color = {0, 0, 127}));
-  connect(constant4.y, division2.u2) annotation(
+        connect(constant4.y, division2.u2) annotation(
           Line(points = {{-122, -104}, {-86, -104}, {-86, -48}}, color = {0, 0, 127}));
-  connect(add.y, division2.u1) annotation(
+        connect(add.y, division2.u1) annotation(
           Line(points = {{-98, -22}, {-96, -22}, {-96, -36}, {-86, -36}}, color = {0, 0, 127}));
-  connect(division2.y, division1.u2) annotation(
+        connect(division2.y, division1.u2) annotation(
           Line(points = {{-62, -42}, {-52, -42}, {-52, 62}}, color = {0, 0, 127}));
         annotation(
           experiment(StartTime = 0, StopTime = 1000, Tolerance = 1e-06, Interval = 0.2),
           Diagram(coordinateSystem(extent = {{-200, 100}, {220, -140}})));
       end HydroPowerModel2;
-      
+
       model TestSimpleHPL1 "Model of a hydropower system with a simple turbine turbine"
         extends Modelica.Icons.Example;
-        OpenHPL.Waterway.Pipe intake(H(displayUnit = "Mm"), SteadyState = false, Vdot(fixed = true), Vdot_0 = 19.077, p_eps = 5e-2) annotation(
-          Placement(visible = true, transformation(origin = {4, 0}, extent = {{-70, 20}, {-50, 40}}, rotation = 0)));
-        OpenHPL.Waterway.Pipe discharge(H = 0.5, L = 600, SteadyState = false, Vdot_0 = 19.077, p_eps = 5e-2) annotation(
-          Placement(visible = true, transformation(origin = {-12, 0}, extent = {{50, -10}, {70, 10}}, rotation = 0)));
-        OpenHPL.Waterway.Reservoir tail(h_0 = 5, useLevel = true) annotation(
-          Placement(visible = true, transformation(origin = {74, 0}, extent = {{-10, 10}, {10, -10}}, rotation = 180)));
-        replaceable OpenHPL.Waterway.Pipe penstock(D_i = 3, D_o = 3, H = 428.5, L = 600, SteadyState = false, Vdot_0 = 19.077, p_eps = 5e-2, vertical = true) annotation(
-          Placement(visible = true, transformation(origin = {-4, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0))) constrainedby Interfaces.TwoContact annotation(
-           Placement(transformation(origin = {0, 30}, extent = {{-10, -10}, {10, 10}})));
+        import Modelica.Constants.pi;
+        Modelica.Blocks.Interfaces.RealInput u annotation(
+          Placement(visible = true, transformation(origin = {-134, 28}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-102, 32}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+        inner OpenHPL.Data data annotation(
+          Placement(visible = true, transformation(origin = {-90, 88}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
         OpenHPL.Waterway.Reservoir reservoir(h_0 = 48, useInflow = false, useLevel = true) annotation(
           Placement(visible = true, transformation(origin = {-80, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        OpenHPL.Waterway.Pipe intake(H(displayUnit = "Mm"), Vdot(fixed = true)) annotation(
+          Placement(visible = true, transformation(origin = {4, 0}, extent = {{-70, 20}, {-50, 40}}, rotation = 0)));
+        OpenHPL.Waterway.Reservoir tail(h_0 = 5, useLevel = true) annotation(
+          Placement(visible = true, transformation(origin = {74, 30}, extent = {{-10, 10}, {10, -10}}, rotation = 180)));
         Modelica.Blocks.Sources.Constant constant1(k = 5) annotation(
-          Placement(visible = true, transformation(origin = {80, -48}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Interfaces.RealInput u annotation(
-          Placement(visible = true, transformation(origin = {-134, 28}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-102, 32}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+          Placement(visible = true, transformation(origin = {80, -18}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        OpenHPL.Waterway.SurgeTank surgeTank annotation(
+          Placement(visible = true, transformation(origin = {-30, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        OpenHPL.Waterway.Pipe penstock(D_i = 3, D_o = 3, H = 428.5, L = 600, vertical = true) annotation(
+          Placement(visible = true, transformation(origin = {-4, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        OpenHPL.Waterway.Pipe discharge(H = 0.5, L = 600) annotation(
+          Placement(visible = true, transformation(origin = {-12, 0}, extent = {{50, -10}, {70, 10}}, rotation = 0)));
+        OpenHPL.ElectroMech.Turbines.Turbine turbine1(enable_P_out = true, enable_w = false, enable_w_in = true) annotation(
+          Placement(visible = true, transformation(origin = {30, 28}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Sources.Constant const1(k = 6) annotation(
+          Placement(visible = true, transformation(origin = {70, -72}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+        Modelica.Blocks.Sources.Ramp control(duration = 30, height = -0.14615, offset = 0.7493, startTime = 50) annotation(
+          Placement(visible = true, transformation(origin = {-80, 62}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Interfaces.RealOutput y annotation(
+          Placement(visible = true, transformation(origin = {112, 66}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {140, 62}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       equation
-        connect(discharge.o, tail.o) annotation(
-          Line(points = {{58, 0}, {64, 0}}, color = {28, 108, 200}));
+        connect(reservoir.level, u) annotation(
+          Line(points = {{-92, 36}, {-134, 36}, {-134, 28}}, color = {0, 0, 127}));
         connect(reservoir.o, intake.i) annotation(
           Line(points = {{-70, 30}, {-66, 30}}, color = {0, 128, 255}));
         connect(constant1.y, tail.level) annotation(
+          Line(points = {{91, -18}, {96, -18}, {96, 36}, {86, 36}}, color = {0, 0, 127}));
+        connect(surgeTank.o, penstock.i) annotation(
+          Line(points = {{-20, 30}, {-14, 30}}, color = {0, 128, 255}));
+        connect(surgeTank.i, intake.o) annotation(
+          Line(points = {{-40, 30}, {-46, 30}}, color = {0, 128, 255}));
+        connect(discharge.o, tail.o) annotation(
+          Line(points = {{58, 0}, {58, 30}, {64, 30}}, color = {0, 128, 255}));
+        connect(turbine1.i, penstock.o) annotation(
+          Line(points = {{20, 28}, {6, 28}, {6, 30}}, color = {0, 128, 255}));
+        connect(turbine1.o, discharge.i) annotation(
+          Line(points = {{40, 28}, {26, 28}, {26, 0}, {38, 0}}, color = {0, 128, 255}));
+        connect(const1.y, turbine1.w_in) annotation(
+          Line(points = {{60, -72}, {22, -72}, {22, 16}}, color = {0, 0, 127}));
+        connect(control.y, turbine1.u_t) annotation(
+          Line(points = {{-68, 62}, {22, 62}, {22, 40}}, color = {0, 0, 127}));
+        connect(turbine1.P_out, y) annotation(
+          Line(points = {{34, 40}, {36, 40}, {36, 66}, {112, 66}}, color = {0, 0, 127}));
+        annotation(
+          experiment(StopTime = 100, StartTime = 0, Tolerance = 1e-06, Interval = 0.2),
+          Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}})));
+      end TestSimpleHPL1;
+
+      model ttttttt
+        OpenHPL.ElectroMech.Turbines.Turbine turbine1(enable_P_out = true, enable_w = false, enable_w_in = false) annotation(
+          Placement(visible = true, transformation(origin = {22, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Interfaces.RealOutput y annotation(
+          Placement(visible = true, transformation(origin = {136, 56}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {136, 56}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        inner OpenHPL.Data data annotation(
+          Placement(visible = true, transformation(origin = {-82, 84}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Interfaces.RealInput u annotation(
+          Placement(visible = true, transformation(origin = {-90, 38}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-90, 38}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+      equation
+        connect(turbine1.P_out, y) annotation(
+          Line(points = {{26, 12}, {26, 56}, {136, 56}}, color = {0, 0, 127}));
+        connect(turbine1.u_t, u) annotation(
+          Line(points = {{14, 12}, {10, 12}, {10, 38}, {-90, 38}}, color = {0, 0, 127}));
+      end ttttttt;
+
+      model TestSimpleHPL3 "Model of a hydropower system with a simple turbine turbine"
+        extends Modelica.Icons.Example;
+        Modelica.Blocks.Sources.Ramp control(duration = 30, height = -0.04615, offset = 0.7493, startTime = 50) annotation(
+          Placement(visible = true, transformation(origin = {-80, 62}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        OpenHPL.Waterway.Pipe intake(H = 23, Vdot(fixed = true)) annotation(
+          Placement(visible = true, transformation(origin = {4, 0}, extent = {{-70, 20}, {-50, 40}}, rotation = 0)));
+        OpenHPL.Waterway.Pipe discharge(H = 0.5, L = 600) annotation(
+          Placement(visible = true, transformation(origin = {-12, 0}, extent = {{50, -10}, {70, 10}}, rotation = 0)));
+        OpenHPL.Waterway.Reservoir tail(h_0 = 5, useLevel = true) annotation(
+          Placement(visible = true, transformation(origin = {74, 0}, extent = {{-10, 10}, {10, -10}}, rotation = 180)));
+        replaceable OpenHPL.Waterway.Pipe penstock(D_i = 3, D_o = 3, H = 428.5, L = 600, vertical = true) annotation(
+          Placement(visible = true, transformation(origin = {-4, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0))) constrainedby Interfaces.TwoContact annotation(
+           Placement(transformation(origin = {0, 30}, extent = {{-10, -10}, {10, 10}})));
+        inner OpenHPL.Data data annotation(
+          Placement(transformation(origin = {-90, 90}, extent = {{-10, -10}, {10, 10}})));
+        OpenHPL.ElectroMech.Turbines.Turbine turbine1(enable_P_out = true, enable_w = false, enable_w_in = false) annotation(
+          Placement(visible = true, transformation(origin = {22, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        OpenHPL.Waterway.Reservoir reservoir(h_0 = 48, useInflow = false, useLevel = true) annotation(
+          Placement(visible = true, transformation(origin = {-80, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Sources.Constant const(k = 48) annotation(
+          Placement(visible = true, transformation(origin = {-80, -12}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+        OpenHPL.Waterway.SurgeTank surgeTank annotation(
+          Placement(visible = true, transformation(origin = {-30, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Sources.Constant constant1(k = 5) annotation(
+          Placement(visible = true, transformation(origin = {80, -48}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Interfaces.RealOutput Torque_Out annotation(
+          Placement(visible = true, transformation(origin = {110, 84}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {140, 42}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      equation
+        connect(discharge.o, tail.o) annotation(
+          Line(points = {{58, 0}, {64, 0}}, color = {28, 108, 200}));
+        connect(turbine1.o, discharge.i) annotation(
+          Line(points = {{32, 0}, {38, 0}}, color = {0, 128, 255}));
+        connect(penstock.o, turbine1.i) annotation(
+          Line(points = {{6, 30}, {10, 30}, {10, -1}, {12, -1}, {12, 0}}, color = {0, 128, 255}));
+        connect(turbine1.u_t, control.y) annotation(
+          Line(points = {{14, 12}, {14, 42}, {-14.5, 42}, {-14.5, 62}, {-69, 62}}, color = {0, 0, 127}));
+        connect(reservoir.o, intake.i) annotation(
+          Line(points = {{-70, 30}, {-66, 30}}, color = {0, 128, 255}));
+        connect(const.y, reservoir.level) annotation(
+          Line(points = {{-91, -12}, {-98, -12}, {-98, 36}, {-92, 36}}, color = {0, 0, 127}));
+        connect(intake.o, surgeTank.i) annotation(
+          Line(points = {{-46, 30}, {-40, 30}}, color = {0, 128, 255}));
+        connect(surgeTank.o, penstock.i) annotation(
+          Line(points = {{-20, 30}, {-14, 30}}, color = {0, 128, 255}));
+        connect(constant1.y, tail.level) annotation(
           Line(points = {{91, -48}, {96, -48}, {96, 6}, {86, 6}}, color = {0, 0, 127}));
-        connect(intake.o, penstock.i) annotation(
-          Line(points = {{-46, 30}, {-14, 30}}, color = {0, 128, 255}));
-        connect(penstock.o, discharge.i) annotation(
-          Line(points = {{6, 30}, {24, 30}, {24, 0}, {38, 0}}, color = {0, 128, 255}));
-        connect(reservoir.level, u) annotation(
-          Line(points = {{-92, 36}, {-134, 36}, {-134, 28}}, color = {0, 0, 127}));
+        connect(turbine1.P_out, Torque_Out) annotation(
+          Line(points = {{26, 12}, {26, 84}, {110, 84}}, color = {0, 0, 127}));
         annotation(
           experiment(StopTime = 1000, StartTime = 0, Tolerance = 1e-06, Interval = 2),
           Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}})));
-      end TestSimpleHPL1;
+      end TestSimpleHPL3;
     end WaterModel;
   end ActiveWork;
   annotation(
