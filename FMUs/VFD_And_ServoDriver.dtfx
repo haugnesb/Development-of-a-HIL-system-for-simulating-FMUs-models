@@ -1,0 +1,473 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ExchangeData version="6.1" serializerVersion="2">
+  <Relation name="ResolvedDeviceBlocks">
+    <Entity type="DeviceBlock" id="0">
+      <Relation name="DeviceBlocks" identifying="true" />
+      <Property name="Name" identifying="true">VFD</Property>
+      <Property name="Description" />
+      <Property name="DeviceType">ECU</Property>
+      <Property name="BackgroundColor">Light Blue</Property>
+      <Relation name="ToProvidedElements">
+        <Entity type="DevicePortGroup" id="1">
+          <Relation name="ToEncompassingPort" identifying="true">
+            <EntityRef id="0" />
+          </Relation>
+          <Property name="Name" identifying="true">Analog</Property>
+          <Property name="Description" />
+          <Relation name="ToProvidedElements">
+            <Entity type="DevicePortGroup" id="2">
+              <Relation name="ToEncompassingPort" identifying="true">
+                <EntityRef id="1" />
+              </Relation>
+              <Property name="Name" identifying="true">A1</Property>
+              <Property name="Description" />
+              <Relation name="ToProvidedElements">
+                <Entity type="DevicePort" id="3">
+                  <Relation name="ToEncompassingPort" identifying="true">
+                    <EntityRef id="2" />
+                  </Relation>
+                  <Property name="Name" identifying="true">Signal</Property>
+                  <Property name="Description" />
+                  <Property name="Direction">In</Property>
+                  <Property name="PhysicalAttributes">Voltage</Property>
+                  <Property name="ElectricalCharacteristics" />
+                  <Property name="LoadDescription" />
+                  <Property name="IsFailureSimulationEnabled">Disabled</Property>
+                  <Property name="IsOpenCircuitAllowed">Not allowed</Property>
+                  <Property name="IsShortToGndAllowed">Not allowed</Property>
+                  <Property name="IsShortToVbatAllowed">Not allowed</Property>
+                  <Property name="IsShortToSignalGenerationChannelAllowed">Not allowed</Property>
+                  <Property name="IsShortToSignalMeasurementChannelAllowed">Not allowed</Property>
+                  <Property name="IsShortToBusChannelAllowed">Not allowed</Property>
+                  <Property name="SignalMapping" />
+                </Entity>
+                <Entity type="DevicePort" id="4">
+                  <Relation name="ToEncompassingPort" identifying="true">
+                    <EntityRef id="2" />
+                  </Relation>
+                  <Property name="Name" identifying="true">Reference</Property>
+                  <Property name="Description" />
+                  <Property name="Direction">Reference</Property>
+                  <Property name="PhysicalAttributes">Voltage</Property>
+                  <Property name="ElectricalCharacteristics" />
+                  <Property name="LoadDescription" />
+                  <Property name="IsFailureSimulationEnabled">Disabled</Property>
+                  <Property name="IsOpenCircuitAllowed">Not allowed</Property>
+                  <Property name="IsShortToGndAllowed">Not allowed</Property>
+                  <Property name="IsShortToVbatAllowed">Not allowed</Property>
+                  <Property name="IsShortToSignalGenerationChannelAllowed">Not allowed</Property>
+                  <Property name="IsShortToSignalMeasurementChannelAllowed">Not allowed</Property>
+                  <Property name="IsShortToBusChannelAllowed">Not allowed</Property>
+                  <Property name="SignalMapping" />
+                </Entity>
+              </Relation>
+            </Entity>
+            <Entity type="DevicePortGroup" id="5">
+              <Relation name="ToEncompassingPort" identifying="true">
+                <EntityRef id="1" />
+              </Relation>
+              <Property name="Name" identifying="true">A2</Property>
+              <Property name="Description" />
+              <Relation name="ToProvidedElements">
+                <Entity type="DevicePort" id="6">
+                  <Relation name="ToEncompassingPort" identifying="true">
+                    <EntityRef id="5" />
+                  </Relation>
+                  <Property name="Name" identifying="true">Signal</Property>
+                  <Property name="Description" />
+                  <Property name="Direction">In</Property>
+                  <Property name="PhysicalAttributes">Voltage</Property>
+                  <Property name="ElectricalCharacteristics" />
+                  <Property name="LoadDescription" />
+                  <Property name="IsFailureSimulationEnabled">Disabled</Property>
+                  <Property name="IsOpenCircuitAllowed">Not allowed</Property>
+                  <Property name="IsShortToGndAllowed">Not allowed</Property>
+                  <Property name="IsShortToVbatAllowed">Not allowed</Property>
+                  <Property name="IsShortToSignalGenerationChannelAllowed">Not allowed</Property>
+                  <Property name="IsShortToSignalMeasurementChannelAllowed">Not allowed</Property>
+                  <Property name="IsShortToBusChannelAllowed">Not allowed</Property>
+                  <Property name="SignalMapping" />
+                </Entity>
+                <Entity type="DevicePort" id="7">
+                  <Relation name="ToEncompassingPort" identifying="true">
+                    <EntityRef id="5" />
+                  </Relation>
+                  <Property name="Name" identifying="true">Reference</Property>
+                  <Property name="Description" />
+                  <Property name="Direction">Reference</Property>
+                  <Property name="PhysicalAttributes">Voltage</Property>
+                  <Property name="ElectricalCharacteristics" />
+                  <Property name="LoadDescription" />
+                  <Property name="IsFailureSimulationEnabled">Disabled</Property>
+                  <Property name="IsOpenCircuitAllowed">Not allowed</Property>
+                  <Property name="IsShortToGndAllowed">Not allowed</Property>
+                  <Property name="IsShortToVbatAllowed">Not allowed</Property>
+                  <Property name="IsShortToSignalGenerationChannelAllowed">Not allowed</Property>
+                  <Property name="IsShortToSignalMeasurementChannelAllowed">Not allowed</Property>
+                  <Property name="IsShortToBusChannelAllowed">Not allowed</Property>
+                  <Property name="SignalMapping" />
+                </Entity>
+              </Relation>
+            </Entity>
+            <Entity type="DevicePortGroup" id="8">
+              <Relation name="ToEncompassingPort" identifying="true">
+                <EntityRef id="1" />
+              </Relation>
+              <Property name="Name" identifying="true">A0</Property>
+              <Property name="Description" />
+              <Relation name="ToProvidedElements">
+                <Entity type="DevicePort" id="9">
+                  <Relation name="ToEncompassingPort" identifying="true">
+                    <EntityRef id="8" />
+                  </Relation>
+                  <Property name="Name" identifying="true">Signal</Property>
+                  <Property name="Description" />
+                  <Property name="Direction">Out</Property>
+                  <Property name="PhysicalAttributes">Voltage</Property>
+                  <Property name="ElectricalCharacteristics" />
+                  <Property name="LoadDescription" />
+                  <Property name="IsFailureSimulationEnabled">Disabled</Property>
+                  <Property name="IsOpenCircuitAllowed">Not allowed</Property>
+                  <Property name="IsShortToGndAllowed">Not allowed</Property>
+                  <Property name="IsShortToVbatAllowed">Not allowed</Property>
+                  <Property name="IsShortToSignalGenerationChannelAllowed">Not allowed</Property>
+                  <Property name="IsShortToSignalMeasurementChannelAllowed">Not allowed</Property>
+                  <Property name="IsShortToBusChannelAllowed">Not allowed</Property>
+                  <Property name="SignalMapping" />
+                </Entity>
+                <Entity type="DevicePort" id="10">
+                  <Relation name="ToEncompassingPort" identifying="true">
+                    <EntityRef id="8" />
+                  </Relation>
+                  <Property name="Name" identifying="true">Reference</Property>
+                  <Property name="Description" />
+                  <Property name="Direction">Reference</Property>
+                  <Property name="PhysicalAttributes">Voltage</Property>
+                  <Property name="ElectricalCharacteristics" />
+                  <Property name="LoadDescription" />
+                  <Property name="IsFailureSimulationEnabled">Disabled</Property>
+                  <Property name="IsOpenCircuitAllowed">Not allowed</Property>
+                  <Property name="IsShortToGndAllowed">Not allowed</Property>
+                  <Property name="IsShortToVbatAllowed">Not allowed</Property>
+                  <Property name="IsShortToSignalGenerationChannelAllowed">Not allowed</Property>
+                  <Property name="IsShortToSignalMeasurementChannelAllowed">Not allowed</Property>
+                  <Property name="IsShortToBusChannelAllowed">Not allowed</Property>
+                  <Property name="SignalMapping" />
+                </Entity>
+              </Relation>
+            </Entity>
+          </Relation>
+        </Entity>
+        <Entity type="DevicePortGroup" id="11">
+          <Relation name="ToEncompassingPort" identifying="true">
+            <EntityRef id="0" />
+          </Relation>
+          <Property name="Name" identifying="true">Digital</Property>
+          <Property name="Description" />
+          <Relation name="ToProvidedElements">
+            <Entity type="DevicePortGroup" id="12">
+              <Relation name="ToEncompassingPort" identifying="true">
+                <EntityRef id="11" />
+              </Relation>
+              <Property name="Name" identifying="true">DCOM</Property>
+              <Property name="Description" />
+              <Relation name="ToProvidedElements">
+                <Entity type="DevicePort" id="13">
+                  <Relation name="ToEncompassingPort" identifying="true">
+                    <EntityRef id="12" />
+                  </Relation>
+                  <Property name="Name" identifying="true">Signal</Property>
+                  <Property name="Description" />
+                  <Property name="Direction">In</Property>
+                  <Property name="PhysicalAttributes">Voltage</Property>
+                  <Property name="ElectricalCharacteristics" />
+                  <Property name="LoadDescription" />
+                  <Property name="IsFailureSimulationEnabled">Disabled</Property>
+                  <Property name="IsOpenCircuitAllowed">Not allowed</Property>
+                  <Property name="IsShortToGndAllowed">Not allowed</Property>
+                  <Property name="IsShortToVbatAllowed">Not allowed</Property>
+                  <Property name="IsShortToSignalGenerationChannelAllowed">Not allowed</Property>
+                  <Property name="IsShortToSignalMeasurementChannelAllowed">Not allowed</Property>
+                  <Property name="IsShortToBusChannelAllowed">Not allowed</Property>
+                  <Property name="SignalMapping" />
+                </Entity>
+                <Entity type="DevicePort" id="14">
+                  <Relation name="ToEncompassingPort" identifying="true">
+                    <EntityRef id="12" />
+                  </Relation>
+                  <Property name="Name" identifying="true">Reference</Property>
+                  <Property name="Description" />
+                  <Property name="Direction">Reference</Property>
+                  <Property name="PhysicalAttributes">Voltage</Property>
+                  <Property name="ElectricalCharacteristics" />
+                  <Property name="LoadDescription" />
+                  <Property name="IsFailureSimulationEnabled">Disabled</Property>
+                  <Property name="IsOpenCircuitAllowed">Not allowed</Property>
+                  <Property name="IsShortToGndAllowed">Not allowed</Property>
+                  <Property name="IsShortToVbatAllowed">Not allowed</Property>
+                  <Property name="IsShortToSignalGenerationChannelAllowed">Not allowed</Property>
+                  <Property name="IsShortToSignalMeasurementChannelAllowed">Not allowed</Property>
+                  <Property name="IsShortToBusChannelAllowed">Not allowed</Property>
+                  <Property name="SignalMapping" />
+                </Entity>
+              </Relation>
+            </Entity>
+            <Entity type="DevicePortGroup" id="15">
+              <Relation name="ToEncompassingPort" identifying="true">
+                <EntityRef id="11" />
+              </Relation>
+              <Property name="Name" identifying="true">D1</Property>
+              <Property name="Description" />
+              <Relation name="ToProvidedElements">
+                <Entity type="DevicePort" id="16">
+                  <Relation name="ToEncompassingPort" identifying="true">
+                    <EntityRef id="15" />
+                  </Relation>
+                  <Property name="Name" identifying="true">Signal</Property>
+                  <Property name="Description" />
+                  <Property name="Direction">In</Property>
+                  <Property name="PhysicalAttributes">Voltage</Property>
+                  <Property name="ElectricalCharacteristics" />
+                  <Property name="LoadDescription" />
+                  <Property name="IsFailureSimulationEnabled">Disabled</Property>
+                  <Property name="IsOpenCircuitAllowed">Not allowed</Property>
+                  <Property name="IsShortToGndAllowed">Not allowed</Property>
+                  <Property name="IsShortToVbatAllowed">Not allowed</Property>
+                  <Property name="IsShortToSignalGenerationChannelAllowed">Not allowed</Property>
+                  <Property name="IsShortToSignalMeasurementChannelAllowed">Not allowed</Property>
+                  <Property name="IsShortToBusChannelAllowed">Not allowed</Property>
+                  <Property name="SignalMapping" />
+                </Entity>
+              </Relation>
+            </Entity>
+            <Entity type="DevicePortGroup" id="17">
+              <Relation name="ToEncompassingPort" identifying="true">
+                <EntityRef id="11" />
+              </Relation>
+              <Property name="Name" identifying="true">D2</Property>
+              <Property name="Description" />
+              <Relation name="ToProvidedElements">
+                <Entity type="DevicePort" id="18">
+                  <Relation name="ToEncompassingPort" identifying="true">
+                    <EntityRef id="17" />
+                  </Relation>
+                  <Property name="Name" identifying="true">Signal</Property>
+                  <Property name="Description" />
+                  <Property name="Direction">In</Property>
+                  <Property name="PhysicalAttributes">Voltage</Property>
+                  <Property name="ElectricalCharacteristics" />
+                  <Property name="LoadDescription" />
+                  <Property name="IsFailureSimulationEnabled">Disabled</Property>
+                  <Property name="IsOpenCircuitAllowed">Not allowed</Property>
+                  <Property name="IsShortToGndAllowed">Not allowed</Property>
+                  <Property name="IsShortToVbatAllowed">Not allowed</Property>
+                  <Property name="IsShortToSignalGenerationChannelAllowed">Not allowed</Property>
+                  <Property name="IsShortToSignalMeasurementChannelAllowed">Not allowed</Property>
+                  <Property name="IsShortToBusChannelAllowed">Not allowed</Property>
+                  <Property name="SignalMapping" />
+                </Entity>
+              </Relation>
+            </Entity>
+            <Entity type="DevicePortGroup" id="19">
+              <Relation name="ToEncompassingPort" identifying="true">
+                <EntityRef id="11" />
+              </Relation>
+              <Property name="Name" identifying="true">D3</Property>
+              <Property name="Description" />
+              <Relation name="ToProvidedElements">
+                <Entity type="DevicePort" id="20">
+                  <Relation name="ToEncompassingPort" identifying="true">
+                    <EntityRef id="19" />
+                  </Relation>
+                  <Property name="Name" identifying="true">Signal</Property>
+                  <Property name="Description" />
+                  <Property name="Direction">In</Property>
+                  <Property name="PhysicalAttributes">Voltage</Property>
+                  <Property name="ElectricalCharacteristics" />
+                  <Property name="LoadDescription" />
+                  <Property name="IsFailureSimulationEnabled">Disabled</Property>
+                  <Property name="IsOpenCircuitAllowed">Not allowed</Property>
+                  <Property name="IsShortToGndAllowed">Not allowed</Property>
+                  <Property name="IsShortToVbatAllowed">Not allowed</Property>
+                  <Property name="IsShortToSignalGenerationChannelAllowed">Not allowed</Property>
+                  <Property name="IsShortToSignalMeasurementChannelAllowed">Not allowed</Property>
+                  <Property name="IsShortToBusChannelAllowed">Not allowed</Property>
+                  <Property name="SignalMapping" />
+                </Entity>
+              </Relation>
+            </Entity>
+          </Relation>
+        </Entity>
+      </Relation>
+    </Entity>
+    <Entity type="DeviceBlock" id="21">
+      <Relation name="DeviceBlocks" identifying="true" />
+      <Property name="Name" identifying="true">Servo Driver</Property>
+      <Property name="Description" />
+      <Property name="DeviceType">ECU</Property>
+      <Property name="BackgroundColor">Light Blue</Property>
+      <Relation name="ToProvidedElements">
+        <Entity type="DevicePortGroup" id="22">
+          <Relation name="ToEncompassingPort" identifying="true">
+            <EntityRef id="21" />
+          </Relation>
+          <Property name="Name" identifying="true">Analog</Property>
+          <Property name="Description" />
+          <Relation name="ToProvidedElements">
+            <Entity type="DevicePort" id="23">
+              <Relation name="ToEncompassingPort" identifying="true">
+                <EntityRef id="22" />
+              </Relation>
+              <Property name="Name" identifying="true">AI1 signal</Property>
+              <Property name="Description" />
+              <Property name="Direction">In</Property>
+              <Property name="PhysicalAttributes">Voltage</Property>
+              <Property name="ElectricalCharacteristics" />
+              <Property name="LoadDescription" />
+              <Property name="IsFailureSimulationEnabled">Disabled</Property>
+              <Property name="IsOpenCircuitAllowed">Not allowed</Property>
+              <Property name="IsShortToGndAllowed">Not allowed</Property>
+              <Property name="IsShortToVbatAllowed">Not allowed</Property>
+              <Property name="IsShortToSignalGenerationChannelAllowed">Not allowed</Property>
+              <Property name="IsShortToSignalMeasurementChannelAllowed">Not allowed</Property>
+              <Property name="IsShortToBusChannelAllowed">Not allowed</Property>
+              <Property name="SignalMapping" />
+            </Entity>
+            <Entity type="DevicePort" id="24">
+              <Relation name="ToEncompassingPort" identifying="true">
+                <EntityRef id="22" />
+              </Relation>
+              <Property name="Name" identifying="true">AI2 signal</Property>
+              <Property name="Description" />
+              <Property name="Direction">In</Property>
+              <Property name="PhysicalAttributes">Voltage</Property>
+              <Property name="ElectricalCharacteristics" />
+              <Property name="LoadDescription" />
+              <Property name="IsFailureSimulationEnabled">Disabled</Property>
+              <Property name="IsOpenCircuitAllowed">Not allowed</Property>
+              <Property name="IsShortToGndAllowed">Not allowed</Property>
+              <Property name="IsShortToVbatAllowed">Not allowed</Property>
+              <Property name="IsShortToSignalGenerationChannelAllowed">Not allowed</Property>
+              <Property name="IsShortToSignalMeasurementChannelAllowed">Not allowed</Property>
+              <Property name="IsShortToBusChannelAllowed">Not allowed</Property>
+              <Property name="SignalMapping" />
+            </Entity>
+            <Entity type="DevicePort" id="25">
+              <Relation name="ToEncompassingPort" identifying="true">
+                <EntityRef id="22" />
+              </Relation>
+              <Property name="Name" identifying="true">AO1</Property>
+              <Property name="Description" />
+              <Property name="Direction">Out</Property>
+              <Property name="PhysicalAttributes">Voltage</Property>
+              <Property name="ElectricalCharacteristics" />
+              <Property name="LoadDescription" />
+              <Property name="IsFailureSimulationEnabled">Disabled</Property>
+              <Property name="IsOpenCircuitAllowed">Not allowed</Property>
+              <Property name="IsShortToGndAllowed">Not allowed</Property>
+              <Property name="IsShortToVbatAllowed">Not allowed</Property>
+              <Property name="IsShortToSignalGenerationChannelAllowed">Not allowed</Property>
+              <Property name="IsShortToSignalMeasurementChannelAllowed">Not allowed</Property>
+              <Property name="IsShortToBusChannelAllowed">Not allowed</Property>
+              <Property name="SignalMapping" />
+            </Entity>
+            <Entity type="DevicePort" id="26">
+              <Relation name="ToEncompassingPort" identifying="true">
+                <EntityRef id="22" />
+              </Relation>
+              <Property name="Name" identifying="true">AO2</Property>
+              <Property name="Description" />
+              <Property name="Direction">Out</Property>
+              <Property name="PhysicalAttributes">Voltage</Property>
+              <Property name="ElectricalCharacteristics" />
+              <Property name="LoadDescription" />
+              <Property name="IsFailureSimulationEnabled">Disabled</Property>
+              <Property name="IsOpenCircuitAllowed">Not allowed</Property>
+              <Property name="IsShortToGndAllowed">Not allowed</Property>
+              <Property name="IsShortToVbatAllowed">Not allowed</Property>
+              <Property name="IsShortToSignalGenerationChannelAllowed">Not allowed</Property>
+              <Property name="IsShortToSignalMeasurementChannelAllowed">Not allowed</Property>
+              <Property name="IsShortToBusChannelAllowed">Not allowed</Property>
+              <Property name="SignalMapping" />
+            </Entity>
+            <Entity type="DevicePort" id="27">
+              <Relation name="ToEncompassingPort" identifying="true">
+                <EntityRef id="22" />
+              </Relation>
+              <Property name="Name" identifying="true">A Reference</Property>
+              <Property name="Description" />
+              <Property name="Direction">Reference</Property>
+              <Property name="PhysicalAttributes">Voltage</Property>
+              <Property name="ElectricalCharacteristics" />
+              <Property name="LoadDescription" />
+              <Property name="IsFailureSimulationEnabled">Disabled</Property>
+              <Property name="IsOpenCircuitAllowed">Not allowed</Property>
+              <Property name="IsShortToGndAllowed">Not allowed</Property>
+              <Property name="IsShortToVbatAllowed">Not allowed</Property>
+              <Property name="IsShortToSignalGenerationChannelAllowed">Not allowed</Property>
+              <Property name="IsShortToSignalMeasurementChannelAllowed">Not allowed</Property>
+              <Property name="IsShortToBusChannelAllowed">Not allowed</Property>
+              <Property name="SignalMapping" />
+            </Entity>
+          </Relation>
+        </Entity>
+        <Entity type="DevicePortGroup" id="28">
+          <Relation name="ToEncompassingPort" identifying="true">
+            <EntityRef id="21" />
+          </Relation>
+          <Property name="Name" identifying="true">Digital</Property>
+          <Property name="Description" />
+          <Relation name="ToProvidedElements">
+            <Entity type="DevicePortGroup" id="29">
+              <Relation name="ToEncompassingPort" identifying="true">
+                <EntityRef id="28" />
+              </Relation>
+              <Property name="Name" identifying="true">D1</Property>
+              <Property name="Description" />
+              <Relation name="ToProvidedElements">
+                <Entity type="DevicePort" id="30">
+                  <Relation name="ToEncompassingPort" identifying="true">
+                    <EntityRef id="29" />
+                  </Relation>
+                  <Property name="Name" identifying="true">Signal</Property>
+                  <Property name="Description" />
+                  <Property name="Direction">In</Property>
+                  <Property name="PhysicalAttributes">Voltage</Property>
+                  <Property name="ElectricalCharacteristics" />
+                  <Property name="LoadDescription" />
+                  <Property name="IsFailureSimulationEnabled">Disabled</Property>
+                  <Property name="IsOpenCircuitAllowed">Not allowed</Property>
+                  <Property name="IsShortToGndAllowed">Not allowed</Property>
+                  <Property name="IsShortToVbatAllowed">Not allowed</Property>
+                  <Property name="IsShortToSignalGenerationChannelAllowed">Not allowed</Property>
+                  <Property name="IsShortToSignalMeasurementChannelAllowed">Not allowed</Property>
+                  <Property name="IsShortToBusChannelAllowed">Not allowed</Property>
+                  <Property name="SignalMapping" />
+                </Entity>
+                <Entity type="DevicePort" id="31">
+                  <Relation name="ToEncompassingPort" identifying="true">
+                    <EntityRef id="29" />
+                  </Relation>
+                  <Property name="Name" identifying="true">Reference</Property>
+                  <Property name="Description" />
+                  <Property name="Direction">Reference</Property>
+                  <Property name="PhysicalAttributes">Voltage</Property>
+                  <Property name="ElectricalCharacteristics" />
+                  <Property name="LoadDescription" />
+                  <Property name="IsFailureSimulationEnabled">Disabled</Property>
+                  <Property name="IsOpenCircuitAllowed">Not allowed</Property>
+                  <Property name="IsShortToGndAllowed">Not allowed</Property>
+                  <Property name="IsShortToVbatAllowed">Not allowed</Property>
+                  <Property name="IsShortToSignalGenerationChannelAllowed">Not allowed</Property>
+                  <Property name="IsShortToSignalMeasurementChannelAllowed">Not allowed</Property>
+                  <Property name="IsShortToBusChannelAllowed">Not allowed</Property>
+                  <Property name="SignalMapping" />
+                </Entity>
+              </Relation>
+            </Entity>
+          </Relation>
+        </Entity>
+      </Relation>
+    </Entity>
+  </Relation>
+</ExchangeData>
