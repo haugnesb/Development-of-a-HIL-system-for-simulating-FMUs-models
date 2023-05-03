@@ -2513,183 +2513,6 @@ package TestPackage
   end ActiveWork;
 
   package Hydro
-    model SMModel
-      parameter Real ServoMotorVoltageAmplitude = 2.5 "Voltage signal sendt to the Servomotor";
-      parameter Real ServoMotorVoltageStartTime = 1 "Ramp up start time";
-      parameter Real ServoMotorVoltageDuration = 0 "Duration of the ram up";
-      parameter Real ServoMotorVoltageOffset = 0 "Initial voltage value of the servo motor";
-      parameter Real ServoMotorTorqueAmplitude = 0.05 "Start torque for the servo motor";
-      parameter Real ServoMotorTorqueStartTime = 1 "Ramp up start time";
-      parameter Real ServoMotorTorqueDuration = 0 "Duration of the ramp up";
-      parameter Real ServoMotorTorqueOffset = 0 "Initial torque value of the servo motor";
-      parameter Real TorqueConversion = 17.2 "Converting the torque measured from the SM from voltage to torque";
-      parameter Real SpeedConversion = 405*2*3.14159265/60 "Converting the measured speed of the SM from voltage to angular velosity";
-      parameter Real DelayStartTime = 1 "Delay for first signal sendt in seconds";
-      Modelica.Blocks.Logical.And and1 annotation (
-        Placement(visible = true, transformation(origin = {-20, 88}, extent = {{28, -60}, {48, -40}}, rotation = 0)));
-      Modelica.Blocks.Interfaces.RealOutput SM_speed_out annotation (
-        Placement(visible = true, transformation(origin = {0, 46}, extent = {{100, -98}, {120, -78}}, rotation = 0), iconTransformation(origin = {119, 1}, extent = {{-19, -19}, {19, 19}}, rotation = 0)));
-      Modelica.Blocks.Math.BooleanToInteger booleanToInteger annotation (
-        Placement(visible = true, transformation(origin = {-18, 88}, extent = {{60, -60}, {80, -40}}, rotation = 0)));
-      Modelica.Blocks.Logical.GreaterThreshold greaterThreshold1 annotation (
-        Placement(visible = true, transformation(origin = {-34, 62}, extent = {{-14, -34}, {6, -14}}, rotation = 0)));
-      Modelica.Blocks.Logical.GreaterThreshold greaterThreshold2 annotation (
-        Placement(visible = true, transformation(origin = {-18, 58}, extent = {{-14, -64}, {6, -44}}, rotation = 0)));
-      Modelica.Blocks.Interfaces.RealOutput SM_start_torque_out annotation (
-        Placement(visible = true, transformation(origin = {2, 70}, extent = {{100, -80}, {120, -60}}, rotation = 0), iconTransformation(origin = {121, -39}, extent = {{-21, -21}, {21, 21}}, rotation = 0)));
-      Modelica.Blocks.Interfaces.IntegerOutput SM_start_stop_out annotation (
-        Placement(visible = true, transformation(origin = {0, 88}, extent = {{100, -60}, {120, -40}}, rotation = 0), iconTransformation(origin = {119, 41}, extent = {{-19, -19}, {19, 19}}, rotation = 0)));
-      Modelica.Blocks.Sources.Ramp ServoMotorTorque(duration = ServoMotorTorqueDuration, height = ServoMotorTorqueAmplitude, offset = ServoMotorTorqueOffset, startTime = ServoMotorTorqueStartTime) annotation (
-        Placement(visible = true, transformation(origin = {8, -68}, extent = {{-80, 40}, {-60, 60}}, rotation = 0)));
-      Modelica.Blocks.Sources.Ramp ServoMotorVoltage(duration = ServoMotorVoltageDuration, height = ServoMotorVoltageAmplitude, offset = ServoMotorVoltageOffset, startTime = ServoMotorVoltageStartTime) annotation (
-        Placement(visible = true, transformation(origin = {-20, -100}, extent = {{-80, 40}, {-60, 60}}, rotation = 0)));
-      Modelica.Blocks.Math.Gain SpeedConv(k = SpeedConversion) annotation (
-        Placement(visible = true, transformation(origin = {-68, 80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Blocks.Interfaces.RealInput AO1 annotation (
-        Placement(visible = true, transformation(origin = {-118, 80}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-120, 80}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-      Modelica.Blocks.Interfaces.RealOutput SM_w_out annotation (
-        Placement(visible = true, transformation(origin = {112, 80}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {119, 81}, extent = {{-19, -19}, {19, 19}}, rotation = 0)));
-      Modelica.Blocks.Math.Gain TorqueConv(k = TorqueConversion) annotation (
-        Placement(visible = true, transformation(origin = {10, -80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Blocks.Interfaces.RealInput AO2 annotation (
-        Placement(visible = true, transformation(origin = {-120, -80}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-122, -78}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-    Modelica.Blocks.Math.Product Power annotation (
-        Placement(visible = true, transformation(origin = {40, -62}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-    Modelica.Blocks.Sources.Step Delay(height = 1, offset = 0, startTime = DelayStartTime)  annotation (
-        Placement(visible = true, transformation(origin = {-2, 68}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Nonlinear.Limiter div0protect(uMax = Modelica.Constants.inf, uMin = Modelica.Constants.small) annotation(
-        Placement(visible = true, transformation(origin = {-76, -80}, extent = {{6, 6}, {-6, -6}}, rotation = -180)));
-  Modelica.Blocks.Continuous.Filter filter(f_cut = 1) annotation(
-        Placement(visible = true, transformation(origin = {-42, -80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Math.Product product annotation(
-        Placement(visible = true, transformation(origin = {68, 82}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-    equation
-      connect(and1.u1, greaterThreshold1.y) annotation(
-        Line(points = {{6, 38}, {-27, 38}}, color = {255, 0, 255}));
-      connect(booleanToInteger.u, and1.y) annotation(
-        Line(points = {{40, 38}, {29, 38}}, color = {255, 0, 255}));
-      connect(and1.u2, greaterThreshold2.y) annotation(
-        Line(points = {{6, 30}, {-2.5, 30}, {-2.5, 4}, {-11, 4}}, color = {255, 0, 255}));
-      connect(booleanToInteger.y, SM_start_stop_out) annotation(
-        Line(points = {{63, 38}, {110, 38}}, color = {255, 127, 0}));
-      connect(ServoMotorTorque.y, SM_start_torque_out) annotation(
-        Line(points = {{-51, -18}, {31.5, -18}, {31.5, 0}, {112, 0}}, color = {0, 0, 127}));
-      connect(greaterThreshold2.u, ServoMotorTorque.y) annotation(
-        Line(points = {{-34, 4}, {-40, 4}, {-40, -18}, {-51, -18}}, color = {0, 0, 127}));
-      connect(ServoMotorVoltage.y, SM_speed_out) annotation(
-        Line(points = {{-79, -50}, {15.5, -50}, {15.5, -42}, {110, -42}}, color = {0, 0, 127}));
-      connect(ServoMotorVoltage.y, greaterThreshold1.u) annotation(
-        Line(points = {{-79, -50}, {-79, 38}, {-50, 38}}, color = {0, 0, 127}));
-      connect(SpeedConv.u, AO1) annotation(
-        Line(points = {{-80, 80}, {-118, 80}}, color = {0, 0, 127}));
-      connect(TorqueConv.y, Power.u2) annotation(
-        Line(points = {{21, -80}, {21, -68}, {28, -68}}, color = {0, 0, 127}));
-      connect(SpeedConv.y, Power.u1) annotation(
-        Line(points = {{-56, 80}, {-24, 80}, {-24, -56}, {28, -56}}, color = {0, 0, 127}));
-      connect(filter.u, div0protect.y) annotation(
-        Line(points = {{-54, -80}, {-70, -80}}, color = {0, 0, 127}));
-      connect(TorqueConv.u, filter.y) annotation(
-        Line(points = {{-2, -80}, {-30, -80}}, color = {0, 0, 127}));
-      connect(div0protect.u, AO2) annotation(
-        Line(points = {{-84, -80}, {-120, -80}}, color = {0, 0, 127}));
-      connect(SpeedConv.y, product.u1) annotation(
-        Line(points = {{-56, 80}, {-24, 80}, {-24, 88}, {56, 88}}, color = {0, 0, 127}));
-      connect(Delay.y, product.u2) annotation(
-        Line(points = {{10, 68}, {56, 68}, {56, 76}}, color = {0, 0, 127}));
-      connect(product.y, SM_w_out) annotation(
-        Line(points = {{80, 82}, {112, 82}, {112, 80}}, color = {0, 0, 127}));
-      annotation (
-        Icon(coordinateSystem(preserveAspectRatio = false)),
-        Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}})),
-        experiment(StopTime = 300, StartTime = 0, Tolerance = 1e-06, Interval = 0.6));
-    end SMModel;
-
-    model HydroModel "Model of a hydropower system with a simple turbine turbine"
-      extends Modelica.Icons.Example;
-      parameter Real TorqueScaling=200000 "Scale down of the torque signal out";
-      parameter Real GuideVaneOpeningOffset=0.7493 "Start possition of theguide vane";
-      parameter Real GuideVaneOpeningChange = -0.04615 "Change in guide vane possition";
-      parameter Real GuideVaneOpeningDuration = 30 "Duration of the change in seconds";
-      parameter Real GuideVaneOpeningStartTime= 50 "Start time for change happening in seconds";
-      Modelica.Blocks.Sources.Ramp control(duration = GuideVaneOpeningDuration, height = GuideVaneOpeningChange, offset = GuideVaneOpeningOffset, startTime = GuideVaneOpeningStartTime) annotation (
-        Placement(visible = true, transformation(origin = {-80, 62}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      OpenHPL.Waterway.Pipe intake(H = 23, Vdot(fixed = true)) annotation (
-        Placement(visible = true, transformation(origin = {4, 0}, extent = {{-70, 20}, {-50, 40}}, rotation = 0)));
-      OpenHPL.Waterway.Pipe discharge(H = 0.5, L = 600) annotation (
-        Placement(visible = true, transformation(origin = {-12, 0}, extent = {{50, -10}, {70, 10}}, rotation = 0)));
-      OpenHPL.Waterway.Reservoir tail(h_0 = 5, useLevel = true) annotation (
-        Placement(visible = true, transformation(origin = {74, 0}, extent = {{-10, 10}, {10, -10}}, rotation = 180)));
-      inner OpenHPL.Data data annotation (
-        Placement(transformation(origin = {-90, 90}, extent = {{-10, -10}, {10, 10}})));
-      OpenHPL.ElectroMech.Turbines.Turbine turbine1(enable_P_out = true, enable_w = false, enable_w_in = true) annotation (
-        Placement(visible = true, transformation(origin = {22, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      OpenHPL.Waterway.Reservoir reservoir(h_0 = 48, useInflow = false, useLevel = true) annotation (
-        Placement(visible = true, transformation(origin = {-80, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Blocks.Sources.Constant const(k = 48) annotation (
-        Placement(visible = true, transformation(origin = {-78, 0}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-      OpenHPL.Waterway.SurgeTank surgeTank annotation (
-        Placement(visible = true, transformation(origin = {-30, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Blocks.Sources.Constant constant1(k = 5) annotation (
-        Placement(visible = true, transformation(origin = {80, -48}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Blocks.Interfaces.RealOutput Torque_Out annotation (
-        Placement(visible = true, transformation(origin = {110, 84}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {120, 2}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-      Modelica.Blocks.Math.Division division annotation (
-        Placement(visible = true, transformation(origin = {28, 60}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
-      Modelica.Blocks.Interfaces.RealInput u annotation (
-        Placement(visible = true, transformation(origin = {-126, -38}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-122, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-      Modelica.Blocks.Nonlinear.Limiter div0protect(uMax = Modelica.Constants.inf, uMin = Modelica.Constants.small) annotation (
-        Placement(visible = true, transformation(origin = {46, 34}, extent = {{6, -6}, {-6, 6}}, rotation = -90)));
-      Modelica.Blocks.Sources.Constant const1(k = 6) annotation (
-        Placement(visible = true, transformation(origin = {70, -72}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-    Modelica.Blocks.Math.Add add annotation (
-        Placement(visible = true, transformation(origin = {14, -36}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
-    Modelica.Blocks.Sources.Constant constant2(k = TorqueScaling) annotation (
-        Placement(visible = true, transformation(origin = {74, 36}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
-    Modelica.Blocks.Math.Division division1 annotation (
-        Placement(visible = true, transformation(origin = {78, 82}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      OpenHPL.Waterway.PenstockKP penstockKP
-        annotation (Placement(transformation(extent={{-14,12},{6,32}})));
-    equation
-      connect(discharge.o, tail.o) annotation (
-        Line(points = {{58, 0}, {64, 0}}, color = {28, 108, 200}));
-      connect(turbine1.o, discharge.i) annotation (
-        Line(points = {{32, 0}, {38, 0}}, color = {0, 128, 255}));
-      connect(turbine1.u_t, control.y) annotation (
-        Line(points = {{14, 12}, {14, 42}, {-14.5, 42}, {-14.5, 62}, {-69, 62}}, color = {0, 0, 127}));
-      connect(reservoir.o, intake.i) annotation (
-        Line(points = {{-70, 30}, {-66, 30}}, color = {0, 128, 255}));
-      connect(const.y, reservoir.level) annotation (
-        Line(points = {{-89, 0}, {-98, 0}, {-98, 36}, {-92, 36}}, color = {0, 0, 127}));
-      connect(intake.o, surgeTank.i) annotation (
-        Line(points = {{-46, 30}, {-40, 30}}, color = {0, 128, 255}));
-      connect(constant1.y, tail.level) annotation (
-        Line(points = {{91, -48}, {96, -48}, {96, 6}, {86, 6}}, color = {0, 0, 127}));
-      connect(turbine1.P_out, division.u1) annotation (
-        Line(points={{26,11},{26,32.5},{22,32.5},{22,48}},          color = {0, 0, 127}));
-      connect(division.u2, div0protect.y) annotation (
-        Line(points={{34,48},{34,49.3}, {46, 49.3},{46,40.6}},      color = {0, 0, 127}));
-      connect(div0protect.u, u) annotation (
-        Line(points={{46,26.8},{48,26.8},{48,-38},{-126,-38}},      color = {0, 0, 127}));
-    connect(add.y, turbine1.w_in) annotation (
-        Line(points={{14,-25},{14,-12}},      color = {0, 0, 127}));
-    connect(u, add.u1) annotation (
-        Line(points = {{-126, -38}, {-28, -38}, {-28, -60}, {8, -60}, {8, -48}}, color = {0, 0, 127}));
-    connect(const1.y, add.u2) annotation (
-        Line(points={{59,-72},{18,-72},{18,-48},{20,-48}},          color = {0, 0, 127}));
-    connect(constant2.y, division1.u2) annotation (
-        Line(points={{74,47},{74,62},{44,62},{44,76},{66,76}},            color = {0, 0, 127}));
-    connect(division.y, division1.u1) annotation (
-        Line(points={{28,71},{30,71},{30,88},{66,88}},          color = {0, 0, 127}));
-    connect(division1.y, Torque_Out) annotation (
-        Line(points={{89,82},{110,82},{110,84}},        color = {0, 0, 127}));
-      connect(surgeTank.o, penstockKP.i) annotation (Line(points={{-20,30},{-18,
-              30},{-18,22},{-14,22}}, color={0,128,255}));
-      connect(turbine1.i, penstockKP.o) annotation (Line(points={{12,0},{10,0},
-              {10,22},{6,22}}, color={0,128,255}));
-      annotation (
-        experiment(StopTime = 1000, StartTime = 0, Tolerance = 1e-06, Interval = 2),
-        Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}})));
-    end HydroModel;
 
     model SignalChecker
       Modelica.Blocks.Logical.LessEqualThreshold lessEqualThreshold(threshold = 10) annotation (
@@ -2743,192 +2566,9 @@ package TestPackage
         Line(points = {{25, 30}, {25, 31.5}, {23, 31.5}, {23, 29}, {27, 29}, {27, 0}, {112, 0}}, color = {255, 127, 0}));
       connect(booleanToInteger.y, TM_speed_torque) annotation (
         Line(points={{25,30},{25,-40},{110,-40}},        color = {255, 127, 0}));
-    end SignalChecker;
-
-    model HPModel
-      Modelica.Blocks.Interfaces.IntegerOutput SM_Start_Stop_Out annotation (
-        Placement(visible = true, transformation(origin = {110, 80}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {126, 48}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Blocks.Interfaces.IntegerOutput TM_Start_Stop_Out annotation (
-        Placement(visible = true, transformation(origin = {110, 40}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Blocks.Interfaces.RealOutput SM_Start_Torque_out annotation (
-        Placement(visible = true, transformation(origin = {110, -40}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {146, -58}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Blocks.Interfaces.RealOutput SM_Speed_Out annotation (
-        Placement(visible = true, transformation(origin = {110, -20}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {122, -26}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      SignalChecker signalChecker annotation (
-        Placement(visible = true, transformation(origin = {50, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Blocks.Interfaces.RealInput SM_speed_in annotation (
-        Placement(visible = true, transformation(origin = {-120, 80}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-102, 78}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-      Modelica.Blocks.Interfaces.IntegerOutput TM_Forward_Reverse_Out
-        annotation (
-        Placement(visible = true, transformation(origin = {110, 20}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {128, -32}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Blocks.Interfaces.IntegerOutput TM_Speed_Torque_Out annotation (
-        Placement(visible = true, transformation(origin = {110, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {140, -54}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      HydroModel hydroModel annotation (
-        Placement(visible = true, transformation(origin = {0, 26}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Blocks.Interfaces.RealInput SM_torque_in annotation (
-        Placement(visible = true, transformation(origin = {-120, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-102, 20}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-      Modelica.Blocks.Interfaces.RealOutput TM_Torque_Out annotation (
-        Placement(visible = true, transformation(origin = {110, 60}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {124, 28}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      SMModel sMModel annotation (
-        Placement(visible = true, transformation(origin = {-58, 40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-    equation
-      connect(sMModel.SM_start_stop_out, SM_Start_Stop_Out) annotation (
-        Line(points={{-46.1,44.1},{-20,44.1},{-20,80},{110,80}},    color = {255, 127, 0}));
-      connect(signalChecker.TM_stop_start, TM_Start_Stop_Out) annotation (
-        Line(points = {{62, 34}, {78, 34}, {78, 40}, {110, 40}}, color = {255, 127, 0}));
-      connect(sMModel.SM_w_out, hydroModel.u) annotation (
-        Line(points={{-46.1,48.1},{-24,48.1},{-24,26},{-12.2,26}},  color = {0, 0, 127}));
-      connect(signalChecker.Test_motor_torque_out, TM_Torque_Out) annotation (
-        Line(points = {{62, 38}, {72, 38}, {72, 60}, {110, 60}}, color = {0, 0, 127}));
-      connect(signalChecker.TM_forward_reverse, TM_Forward_Reverse_Out) annotation (
-        Line(points = {{62, 30}, {82, 30}, {82, 20}, {110, 20}}, color = {255, 127, 0}));
-      connect(sMModel.SM_speed_out, SM_Speed_Out) annotation (
-        Line(points={{-46.1,40.1},{-32,40.1},{-32,-20},{110,-20}},    color = {0, 0, 127}));
-      connect(sMModel.AO2, SM_torque_in) annotation (
-        Line(points={{-70.2,32.2},{-84,32.2},{-84,0},{-120,0}},    color = {0, 0, 127}));
-      connect(signalChecker.TM_speed_torque, TM_Speed_Torque_Out) annotation (
-        Line(points={{61.9,26.1},{76,26.1},{76,0},{110,0}},    color = {255, 127, 0}));
-      connect(sMModel.SM_start_torque_out, SM_Start_Torque_out) annotation (
-        Line(points={{-45.9,36.1},{-36,36.1},{-36,-40},{110,-40}},    color = {0, 0, 127}));
-      connect(sMModel.AO1, SM_speed_in) annotation (
-        Line(points = {{-70, 48}, {-80, 48}, {-80, 80}, {-120, 80}}, color = {0, 0, 127}));
-      connect(hydroModel.Torque_Out, signalChecker.Torque_In) annotation (
-        Line(points={{12,26.2},{38,26.2},{38,30}},    color = {0, 0, 127}));
-    end HPModel;
-
-    model HydroM "Model of a hydropower system with a simple turbine turbine"
-      extends Modelica.Icons.Example;
-      parameter Real TorqueScaling=200000 "Scale down of the torque signal out";
-      parameter Real GuideVaneOpeningOffset=0.7493 "Start possition of theguide vane";
-      parameter Real GuideVaneOpeningChange = 0.04615 "Change in guide vane possition";
-      parameter Real GuideVaneOpeningDuration = 30 "Duration of the change in seconds";
-      parameter Real GuideVaneOpeningStartTime= 50 "Start time for change happening in seconds";
-      Modelica.Blocks.Sources.Ramp control(duration = GuideVaneOpeningDuration, height = GuideVaneOpeningChange, offset = GuideVaneOpeningOffset, startTime = GuideVaneOpeningStartTime) annotation (
-        Placement(visible = true, transformation(origin = {-80, 62}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      OpenHPL.Waterway.Pipe intake(H = 23, Vdot(fixed = true)) annotation (
-        Placement(visible = true, transformation(origin = {4, 0}, extent = {{-70, 20}, {-50, 40}}, rotation = 0)));
-      OpenHPL.Waterway.Pipe discharge(H = 0.5, L = 600) annotation (
-        Placement(visible = true, transformation(origin = {-12, 0}, extent = {{50, -10}, {70, 10}}, rotation = 0)));
-      OpenHPL.Waterway.Reservoir tail(h_0 = 5, useLevel = true) annotation (
-        Placement(visible = true, transformation(origin = {74, 0}, extent = {{-10, 10}, {10, -10}}, rotation = 180)));
-      inner OpenHPL.Data data annotation (
-        Placement(transformation(origin = {-90, 90}, extent = {{-10, -10}, {10, 10}})));
-      OpenHPL.Waterway.Reservoir reservoir(h_0 = 48, useInflow = false, useLevel = true) annotation (
-        Placement(visible = true, transformation(origin = {-80, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Blocks.Sources.Constant const(k = 48) annotation (
-        Placement(visible = true, transformation(origin = {-78, 0}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-      OpenHPL.Waterway.SurgeTank surgeTank annotation (
-        Placement(visible = true, transformation(origin = {-30, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Blocks.Sources.Constant constant1(k = 5) annotation (
-        Placement(visible = true, transformation(origin = {80, -48}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Blocks.Interfaces.RealOutput Torque_Out annotation (
-        Placement(visible = true, transformation(origin = {110, 82}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {120, 2}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-      Modelica.Blocks.Math.Division division annotation (
-        Placement(visible = true, transformation(origin = {28, 60}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
-      Modelica.Blocks.Interfaces.RealInput W_in annotation (
-        Placement(visible = true, transformation(origin = {-120, -42}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-122, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-      Modelica.Blocks.Nonlinear.Limiter div0protect(uMax = Modelica.Constants.inf, uMin = Modelica.Constants.small) annotation (
-        Placement(visible = true, transformation(origin = {46, 34}, extent = {{6, -6}, {-6, 6}}, rotation = -90)));
-    Modelica.Blocks.Sources.Constant constant2(k = TorqueScaling) annotation (
-        Placement(visible = true, transformation(origin = {74, 36}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
-    Modelica.Blocks.Math.Division division1 annotation (
-        Placement(visible = true, transformation(origin = {78, 82}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  OpenHPL.Waterway.Pipe Penstock annotation(
-        Placement(visible = true, transformation(origin = {-10, 2}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  OpenHPL.ElectroMech.Turbines.Turbine turbine(ValveCapacity = false, enable_P_out = true, enable_w_in = true)  annotation(
-        Placement(visible = true, transformation(origin = {18, 2}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Sources.Constant constant3(k = 52) annotation(
-        Placement(visible = true, transformation(origin = {-12, -64}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-    equation
-      connect(discharge.o, tail.o) annotation(
-        Line(points = {{58, 0}, {64, 0}}, color = {28, 108, 200}));
-      connect(reservoir.o, intake.i) annotation(
-        Line(points = {{-70, 30}, {-66, 30}}, color = {0, 128, 255}));
-      connect(const.y, reservoir.level) annotation(
-        Line(points = {{-89, 0}, {-98, 0}, {-98, 36}, {-92, 36}}, color = {0, 0, 127}));
-      connect(intake.o, surgeTank.i) annotation(
-        Line(points = {{-46, 30}, {-40, 30}}, color = {0, 128, 255}));
-      connect(constant1.y, tail.level) annotation(
-        Line(points = {{91, -48}, {96, -48}, {96, 6}, {86, 6}}, color = {0, 0, 127}));
-      connect(division.u2, div0protect.y) annotation(
-        Line(points = {{34, 48}, {34, 49.3}, {46, 49.3}, {46, 40.6}}, color = {0, 0, 127}));
-      connect(div0protect.u, W_in) annotation(
-        Line(points = {{46, 26.8}, {48, 26.8}, {48, -42}, {-120, -42}}, color = {0, 0, 127}));
-      connect(constant2.y, division1.u2) annotation(
-        Line(points = {{74, 47}, {74, 62}, {44, 62}, {44, 76}, {66, 76}}, color = {0, 0, 127}));
-      connect(division.y, division1.u1) annotation(
-        Line(points = {{28, 71}, {30, 71}, {30, 88}, {66, 88}}, color = {0, 0, 127}));
-      connect(division1.y, Torque_Out) annotation(
-        Line(points = {{89, 82}, {110, 82}}, color = {0, 0, 127}));
-      connect(Penstock.i, surgeTank.o) annotation(
-        Line(points = {{-20, 2}, {-16, 2}, {-16, 30}, {-20, 30}}, color = {0, 128, 255}));
-  connect(turbine.u_t, control.y) annotation(
-        Line(points = {{10, 14}, {0, 14}, {0, 62}, {-68, 62}}, color = {0, 0, 127}));
-  connect(turbine.P_out, division.u1) annotation(
-        Line(points = {{22, 13}, {22, 48}}, color = {0, 0, 127}));
-  connect(turbine.i, Penstock.o) annotation(
-        Line(points = {{8, 2}, {0, 2}}, color = {0, 128, 255}));
-  connect(discharge.i, turbine.o) annotation(
-        Line(points = {{38, 0}, {38, -2}, {28, -2}, {28, 2}}, color = {0, 128, 255}));
-  connect(constant3.y, turbine.w_in) annotation(
-        Line(points = {{0, -64}, {10, -64}, {10, -10}}, color = {0, 0, 127}));
-      annotation (
-        experiment(StopTime = 1000, StartTime = 0, Tolerance = 1e-06, Interval = 2),
-        Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}})));
-    end HydroM;
-
-    model HPM
-      Modelica.Blocks.Interfaces.IntegerOutput SM_Start_Stop_Out annotation (
-        Placement(visible = true, transformation(origin = {110, 80}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {126, 48}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Blocks.Interfaces.IntegerOutput TM_Start_Stop_Out annotation (
-        Placement(visible = true, transformation(origin = {110, 40}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Blocks.Interfaces.RealOutput SM_Start_Torque_out annotation (
-        Placement(visible = true, transformation(origin = {110, -40}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {146, -58}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Blocks.Interfaces.RealOutput SM_Speed_Out annotation (
-        Placement(visible = true, transformation(origin = {110, -20}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {122, -26}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      SignalChecker SignalChecker annotation (
-        Placement(visible = true, transformation(origin = {50, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Blocks.Interfaces.RealInput SM_speed_in annotation (
-        Placement(visible = true, transformation(origin = {-120, 80}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-102, 78}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-      Modelica.Blocks.Interfaces.IntegerOutput TM_Forward_Reverse_Out
-        annotation (
-        Placement(visible = true, transformation(origin = {110, 20}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {128, -32}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Blocks.Interfaces.IntegerOutput TM_Speed_Torque_Out annotation (
-        Placement(visible = true, transformation(origin = {110, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {140, -54}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Blocks.Interfaces.RealInput SM_torque_in annotation (
-        Placement(visible = true, transformation(origin = {-120, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-102, 20}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-      Modelica.Blocks.Interfaces.RealOutput TM_Torque_Out annotation (
-        Placement(visible = true, transformation(origin = {110, 60}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {124, 28}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      SMModel SMModel annotation (
-        Placement(visible = true, transformation(origin = {-58, 40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      HydroM hydroM
-        annotation (Placement(transformation(extent={{-12,18},{8,38}})));
-    equation
-      connect(SMModel.SM_start_stop_out, SM_Start_Stop_Out) annotation (
-        Line(points={{-46.1,44.1},{-20,44.1},{-20,80},{110,80}},    color = {255, 127, 0}));
-      connect(SignalChecker.TM_stop_start, TM_Start_Stop_Out) annotation (
-        Line(points = {{62, 34}, {78, 34}, {78, 40}, {110, 40}}, color = {255, 127, 0}));
-      connect(SignalChecker.Test_motor_torque_out, TM_Torque_Out) annotation (
-        Line(points = {{62, 38}, {72, 38}, {72, 60}, {110, 60}}, color = {0, 0, 127}));
-      connect(SignalChecker.TM_forward_reverse, TM_Forward_Reverse_Out) annotation (
-        Line(points = {{62, 30}, {82, 30}, {82, 20}, {110, 20}}, color = {255, 127, 0}));
-      connect(SMModel.SM_speed_out, SM_Speed_Out) annotation (
-        Line(points={{-46.1,40.1},{-32,40.1},{-32,-20},{110,-20}},    color = {0, 0, 127}));
-      connect(SMModel.AO2, SM_torque_in) annotation (
-        Line(points={{-70.2,32.2},{-84,32.2},{-84,0},{-120,0}},    color = {0, 0, 127}));
-      connect(SignalChecker.TM_speed_torque, TM_Speed_Torque_Out) annotation (
-        Line(points={{61.9,26.1},{76,26.1},{76,0},{110,0}},    color = {255, 127, 0}));
-      connect(SMModel.SM_start_torque_out, SM_Start_Torque_out) annotation (
-        Line(points={{-45.9,36.1},{-36,36.1},{-36,-40},{110,-40}},    color = {0, 0, 127}));
-      connect(SMModel.AO1, SM_speed_in) annotation (
-        Line(points = {{-70, 48}, {-80, 48}, {-80, 80}, {-120, 80}}, color = {0, 0, 127}));
-      connect(hydroM.Torque_Out, SignalChecker.Torque_In) annotation (Line(
-            points={{10,28.2},{23,28.2},{23,30},{38,30}}, color={0,0,127}));
-      connect(hydroM.u, SMModel.SM_w_out) annotation (Line(points={{-14.2,28},{
-              -24,28},{-24,46},{-46.1,46},{-46.1,48.1}}, color={0,0,127}));
-  connect(hydroM.W_in, SMModel.SM_w_out) annotation(
-        Line(points = {{-14, 28}, {-46, 28}, {-46, 48}}, color = {0, 0, 127}));
-    end HPM;
+    annotation(
+        experiment(StartTime = 0, StopTime = 300, Tolerance = 1e-6, Interval = 0.6));
+end SignalChecker;
     
     model SMModel1
       parameter Real ServoMotorVoltageAmplitude = 2.5 "Voltage signal sendt to the Servomotor";
@@ -2976,8 +2616,10 @@ package TestPackage
         Placement(visible = true, transformation(origin = {-76, -80}, extent = {{6, 6}, {-6, -6}}, rotation = -180)));
     Modelica.Blocks.Continuous.Filter filter(f_cut = 1) annotation(
         Placement(visible = true, transformation(origin = {-42, -80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Continuous.Filter filter1(f_cut = 1) annotation(
-        Placement(visible = true, transformation(origin = {-78, 80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Sources.Step step(startTime = DelayStartTime)  annotation(
+        Placement(visible = true, transformation(origin = {26, 68}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
+  Modelica.Blocks.Math.Product product annotation(
+        Placement(visible = true, transformation(origin = {56, 76}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     equation
       connect(and1.u1, greaterThreshold1.y) annotation(
         Line(points = {{6, 38}, {-27, 38}}, color = {255, 0, 255}));
@@ -3005,17 +2647,460 @@ package TestPackage
         Line(points = {{-2, -80}, {-30, -80}}, color = {0, 0, 127}));
       connect(div0protect.u, AO2) annotation(
         Line(points = {{-84, -80}, {-120, -80}}, color = {0, 0, 127}));
-  connect(SM_w_out, SpeedConv.y) annotation(
-        Line(points = {{112, 80}, {-31, 80}}, color = {0, 0, 127}));
-  connect(filter1.y, SpeedConv.u) annotation(
-        Line(points = {{-66, 80}, {-54, 80}}, color = {0, 0, 127}));
-  connect(filter1.u, AO1) annotation(
-        Line(points = {{-90, 80}, {-118, 80}}, color = {0, 0, 127}));
+      connect(SpeedConv.u, AO1) annotation(
+        Line(points = {{-54, 80}, {-118, 80}}, color = {0, 0, 127}));
+  connect(step.y, product.u2) annotation(
+        Line(points = {{32, 68}, {44, 68}, {44, 70}}, color = {0, 0, 127}));
+  connect(SpeedConv.y, product.u1) annotation(
+        Line(points = {{-30, 80}, {44, 80}, {44, 82}}, color = {0, 0, 127}));
+  connect(product.y, SM_w_out) annotation(
+        Line(points = {{68, 76}, {80, 76}, {80, 80}, {112, 80}}, color = {0, 0, 127}));
       annotation (
         Icon(coordinateSystem(preserveAspectRatio = false)),
         Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}})),
         experiment(StopTime = 300, StartTime = 0, Tolerance = 1e-06, Interval = 0.6));
     end SMModel1;
+    
+    model HPM "Model of a hydropower system with a simple turbine turbine"
+      extends Modelica.Icons.Example;
+      parameter Real TorqueScaling=200000 "Scale down of the torque signal out";
+      parameter Real GuideVaneOpeningOffset=0.7493 "Start possition of theguide vane";
+      parameter Real GuideVaneOpeningChange = -0.04615 "Change in guide vane possition";
+      parameter Real GuideVaneOpeningDuration = 30 "Duration of the change in seconds";
+      parameter Real GuideVaneOpeningStartTime= 50 "Start time for change happening in seconds";
+      OpenHPL.Waterway.Reservoir reservoir(useLevel=true,
+                                           h_0=48) annotation (Placement(transformation(
+            origin={-90,30},
+            extent={{-10,-10},{10,10}})));
+      Modelica.Blocks.Sources.Ramp control(
+        duration=GuideVaneOpeningDuration, height = GuideVaneOpeningChange, offset = GuideVaneOpeningOffset,
+        startTime=GuideVaneOpeningStartTime) annotation (
+        Placement(transformation(origin={-10,70}, extent = {{-10, -10}, {10, 10}})));
+      OpenHPL.Waterway.Pipe intake(H=23, Vdot(fixed = true)) annotation (Placement(transformation(extent={{-70,20},{-50,40}})));
+      OpenHPL.Waterway.Pipe discharge(H=0.5, L=600) annotation (Placement(transformation(extent={{50,-10},{70,10}})));
+      OpenHPL.Waterway.Reservoir tail(useLevel=true,
+                                      h_0=5) annotation (Placement(transformation(
+            origin={90,0},
+            extent={{-10,10},{10,-10}},
+            rotation=180)));
+      replaceable OpenHPL.Waterway.Pipe penstock(
+        D_i=3,
+        D_o=3,
+        H=428.5,
+        L=600,
+        vertical=true) constrainedby OpenHPL.Interfaces.TwoContact
+                                                           annotation (Placement(transformation(origin={0,30}, extent={{-10,-10},{10,10}})));
+      OpenHPL.Waterway.SurgeTank surgeTank(h_0=69.9) annotation (Placement(transformation(
+            origin={-30,30},
+            extent={{-10,-10},{10,10}})));
+      OpenHPL.ElectroMech.Turbines.Turbine turbine(
+        C_v=3.7,
+        ConstEfficiency=false,
+        enable_nomSpeed=true,
+        enable_f=false,
+        enable_P_out=true, enable_w_in = false) annotation (Placement(transformation(origin={30,10},
+              extent={{-10,-10},{10,10}})));
+      inner OpenHPL.Data data annotation (Placement(transformation(
+            origin={-90,90},
+            extent={{-10,-10},{10,10}})));
+      Modelica.Blocks.Sources.Constant const(k=48)   annotation (
+        Placement(visible = true, transformation(origin = {-80, -12}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+      Modelica.Blocks.Sources.Constant const1(k=5)   annotation (
+        Placement(visible = true, transformation(origin={74,-68},     extent={{-10,-10},
+                {10,10}},                                                                              rotation=0)));
+      Modelica.Blocks.Interfaces.RealOutput Tourque_out                          "Mechanical Output power"
+        annotation (Placement(visible = true, transformation(origin = {6, 12}, extent = {{102, 60}, {122, 80}}, rotation = 0), iconTransformation(origin = {0, 0}, extent = {{102, 60}, {122, 80}}, rotation = 0)));
+  Modelica.Blocks.Math.Division division1 annotation(
+        Placement(visible = true, transformation(origin = {86, 82}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Math.Division division annotation(
+        Placement(visible = true, transformation(origin = {36, 60}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
+  Modelica.Blocks.Nonlinear.Limiter div0protect(uMax = Modelica.Constants.inf, uMin = Modelica.Constants.small) annotation(
+        Placement(visible = true, transformation(origin = {54, 34}, extent = {{6, -6}, {-6, 6}}, rotation = -90)));
+  Modelica.Blocks.Sources.Constant constant2(k = TorqueScaling) annotation(
+        Placement(visible = true, transformation(origin = {82, 36}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
+  Modelica.Blocks.Interfaces.RealInput W_in annotation(
+        Placement(visible = true, transformation(origin = {-120, -42}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-122, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+    equation
+      connect(turbine.o, discharge.i) annotation(
+        Line(points = {{40, 10}, {44, 10}, {44, 0}, {50, 0}}, color = {28, 108, 200}));
+      connect(control.y, turbine.u_t) annotation(
+        Line(points = {{1, 70}, {16, 70}, {16, 40}, {22, 40}, {22, 22}}, color = {0, 0, 127}));
+      connect(penstock.o, turbine.i) annotation(
+        Line(points = {{10, 30}, {14.95, 30}, {14.95, 10}, {20, 10}}, color = {28, 108, 200}));
+      connect(reservoir.o, intake.i) annotation(
+        Line(points = {{-80, 30}, {-70, 30}}, color = {28, 108, 200}));
+      connect(intake.o, surgeTank.i) annotation(
+        Line(points = {{-50, 30}, {-40, 30}}, color = {28, 108, 200}));
+      connect(surgeTank.o, penstock.i) annotation(
+        Line(points = {{-20, 30}, {-10, 30}}, color = {28, 108, 200}));
+      connect(discharge.o, tail.o) annotation(
+        Line(points = {{70, 0}, {80, 0}}, color = {28, 108, 200}));
+      connect(const.y, reservoir.level) annotation(
+        Line(points = {{-91, -12}, {-100, -12}, {-100, -14}, {-118, -14}, {-118, 36}, {-102, 36}}, color = {0, 0, 127}));
+      connect(const1.y, tail.level) annotation(
+        Line(points = {{85, -68}, {114, -68}, {114, 6}, {102, 6}}, color = {0, 0, 127}));
+      connect(constant2.y, division1.u2) annotation(
+        Line(points = {{82, 47}, {82, 62}, {52, 62}, {52, 76}, {74, 76}}, color = {0, 0, 127}));
+      connect(division.y, division1.u1) annotation(
+        Line(points = {{36, 71}, {38, 71}, {38, 88}, {74, 88}}, color = {0, 0, 127}));
+      connect(division.u2, div0protect.y) annotation(
+        Line(points = {{42, 48}, {42, 45.15}, {54, 45.15}, {54, 41}}, color = {0, 0, 127}));
+  connect(division1.y, Tourque_out) annotation(
+        Line(points = {{98, 82}, {118, 82}}, color = {0, 0, 127}));
+  connect(division.u1, turbine.P_out) annotation(
+        Line(points = {{30, 48}, {30, 22}, {34, 22}}, color = {0, 0, 127}));
+  connect(W_in, div0protect.u) annotation(
+        Line(points = {{-120, -42}, {46, -42}, {46, 26}, {54, 26}}, color = {0, 0, 127}));
+      annotation (experiment(StopTime = 300, StartTime = 0, Tolerance = 1e-06, Interval = 0.6));
+    end HPM;
+
+    model HydroM
+  TestPackage.Hydro.SignalChecker SignalChecker annotation(
+        Placement(visible = true, transformation(origin = {38, 8}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Interfaces.RealOutput SM_Start_Torque_out annotation(
+        Placement(visible = true, transformation(origin = {110, -40}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {146, -58}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Interfaces.IntegerOutput SM_Start_Stop_Out annotation(
+        Placement(visible = true, transformation(origin = {110, 80}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {126, 48}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Interfaces.IntegerOutput TM_Speed_Torque_Out annotation(
+        Placement(visible = true, transformation(origin = {110, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {140, -54}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Interfaces.IntegerOutput TM_Start_Stop_Out annotation(
+        Placement(visible = true, transformation(origin = {110, 40}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Interfaces.RealOutput TM_Torque_Out annotation(
+        Placement(visible = true, transformation(origin = {110, 60}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {124, 28}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Interfaces.IntegerOutput TM_Forward_Reverse_Out annotation(
+        Placement(visible = true, transformation(origin = {110, 20}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {128, -32}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Interfaces.RealOutput SM_Speed_Out annotation(
+        Placement(visible = true, transformation(origin = {110, -20}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {122, -26}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Interfaces.RealInput SM_torque_in annotation(
+        Placement(visible = true, transformation(origin = {-120, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-102, 20}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+  Modelica.Blocks.Interfaces.RealInput SM_speed_in annotation(
+        Placement(visible = true, transformation(origin = {-120, 80}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-102, 78}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+  HPM hpm annotation(
+        Placement(visible = true, transformation(origin = {-2, 14}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  SMModel1 sMModel1 annotation(
+        Placement(visible = true, transformation(origin = {-54, 10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    equation
+      connect(SignalChecker.TM_speed_torque, TM_Speed_Torque_Out) annotation(
+        Line(points = {{50, 4}, {66, 4}, {66, 0}, {110, 0}}, color = {255, 127, 0}));
+      connect(SignalChecker.TM_forward_reverse, TM_Forward_Reverse_Out) annotation(
+        Line(points = {{50, 8}, {80, 8}, {80, 20}, {110, 20}}, color = {255, 127, 0}));
+      connect(SignalChecker.TM_stop_start, TM_Start_Stop_Out) annotation(
+        Line(points = {{50, 12}, {70, 12}, {70, 40}, {110, 40}}, color = {255, 127, 0}));
+      connect(SignalChecker.Test_motor_torque_out, TM_Torque_Out) annotation(
+        Line(points = {{50, 16}, {60, 16}, {60, 60}, {110, 60}}, color = {0, 0, 127}));
+      connect(hpm.Tourque_out, SignalChecker.Torque_In) annotation(
+        Line(points = {{10, 22}, {18, 22}, {18, 8}, {26, 8}}, color = {0, 0, 127}));
+  connect(sMModel1.SM_w_out, hpm.W_in) annotation(
+        Line(points = {{-42, 18}, {-14, 18}, {-14, 14}}, color = {0, 0, 127}));
+  connect(sMModel1.SM_start_stop_out, SM_Start_Stop_Out) annotation(
+        Line(points = {{-42, 14}, {-30, 14}, {-30, 80}, {110, 80}}, color = {255, 127, 0}));
+  connect(sMModel1.SM_speed_out, SM_Speed_Out) annotation(
+        Line(points = {{-42, 10}, {-30, 10}, {-30, -20}, {110, -20}}, color = {0, 0, 127}));
+  connect(sMModel1.SM_start_torque_out, SM_Start_Torque_out) annotation(
+        Line(points = {{-42, 6}, {-34, 6}, {-34, -40}, {110, -40}}, color = {0, 0, 127}));
+  connect(SM_torque_in, sMModel1.AO2) annotation(
+        Line(points = {{-120, 0}, {-66, 0}, {-66, 2}}, color = {0, 0, 127}));
+  connect(sMModel1.AO1, SM_speed_in) annotation(
+        Line(points = {{-66, 18}, {-80, 18}, {-80, 80}, {-120, 80}}, color = {0, 0, 127}));
+      annotation(
+        experiment(StartTime = 0, StopTime = 300, Tolerance = 1e-6, Interval = 0.6));
+end HydroM;
+    
+    model HPM1 "Model of a hydropower system with a simple turbine turbine"
+      extends Modelica.Icons.Example;
+      parameter Real TorqueScaling=200000 "Scale down of the torque signal out";
+      parameter Real GuideVaneOpeningOffset=0.7493 "Start possition of theguide vane";
+      parameter Real GuideVaneOpeningChange = -0.04615 "Change in guide vane possition";
+      parameter Real GuideVaneOpeningDuration = 30 "Duration of the change in seconds";
+      parameter Real GuideVaneOpeningStartTime= 50 "Start time for change happening in seconds";
+      OpenHPL.Waterway.Reservoir reservoir(useLevel=true,
+                                           h_0=48) annotation (Placement(transformation(
+            origin={-90,30},
+            extent={{-10,-10},{10,10}})));
+      Modelica.Blocks.Sources.Ramp control(
+        duration=GuideVaneOpeningDuration, height = GuideVaneOpeningChange, offset = GuideVaneOpeningOffset,
+        startTime=GuideVaneOpeningStartTime) annotation (
+        Placement(transformation(origin={-10,70}, extent = {{-10, -10}, {10, 10}})));
+      OpenHPL.Waterway.Pipe intake(H=23, Vdot(fixed = true)) annotation (Placement(transformation(extent={{-70,20},{-50,40}})));
+      OpenHPL.Waterway.Pipe discharge(H=0.5, L=600) annotation (Placement(transformation(extent={{50,-10},{70,10}})));
+      OpenHPL.Waterway.Reservoir tail(useLevel=true,
+                                      h_0=5) annotation (Placement(transformation(
+            origin={90,0},
+            extent={{-10,10},{10,-10}},
+            rotation=180)));
+      replaceable OpenHPL.Waterway.Pipe penstock(
+        D_i=3,
+        D_o=3,
+        H=428.5,
+        L=600,
+        vertical=true) constrainedby OpenHPL.Interfaces.TwoContact
+                                                           annotation (Placement(transformation(origin={0,30}, extent={{-10,-10},{10,10}})));
+      OpenHPL.Waterway.SurgeTank surgeTank(h_0=69.9) annotation (Placement(transformation(
+            origin={-30,30},
+            extent={{-10,-10},{10,10}})));
+      OpenHPL.ElectroMech.Turbines.Turbine turbine(
+        C_v=3.7,
+        ConstEfficiency=false,
+        enable_nomSpeed=true,
+        enable_f=false,
+        enable_P_out=true, enable_w_in = true) annotation (Placement(transformation(origin={30,10},
+              extent={{-10,-10},{10,10}})));
+      inner OpenHPL.Data data annotation (Placement(transformation(
+            origin={-90,90},
+            extent={{-10,-10},{10,10}})));
+      Modelica.Blocks.Sources.Constant const(k=48)   annotation (
+        Placement(visible = true, transformation(origin = {-80, -12}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+      Modelica.Blocks.Sources.Constant const1(k=5)   annotation (
+        Placement(visible = true, transformation(origin={74,-68},     extent={{-10,-10},
+                {10,10}},                                                                              rotation=0)));
+      Modelica.Blocks.Interfaces.RealOutput Tourque_out                          "Mechanical Output power"
+        annotation (Placement(visible = true, transformation(origin = {6, 12}, extent = {{102, 60}, {122, 80}}, rotation = 0), iconTransformation(origin = {0, 0}, extent = {{102, 60}, {122, 80}}, rotation = 0)));
+    Modelica.Blocks.Math.Division division1 annotation(
+        Placement(visible = true, transformation(origin = {86, 82}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Modelica.Blocks.Math.Division division annotation(
+        Placement(visible = true, transformation(origin = {36, 60}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
+    Modelica.Blocks.Nonlinear.Limiter div0protect(uMax = Modelica.Constants.inf, uMin = Modelica.Constants.small) annotation(
+        Placement(visible = true, transformation(origin = {54, 34}, extent = {{6, -6}, {-6, 6}}, rotation = -90)));
+    Modelica.Blocks.Sources.Constant constant2(k = TorqueScaling) annotation(
+        Placement(visible = true, transformation(origin = {82, 36}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
+    Modelica.Blocks.Interfaces.RealInput W_in annotation(
+        Placement(visible = true, transformation(origin = {-120, -42}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-122, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+  Modelica.Blocks.Sources.Constant constantxx(k = 52)  annotation(
+        Placement(visible = true, transformation(origin = {-74, -80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    equation
+      connect(turbine.o, discharge.i) annotation(
+        Line(points = {{40, 10}, {44, 10}, {44, 0}, {50, 0}}, color = {28, 108, 200}));
+      connect(control.y, turbine.u_t) annotation(
+        Line(points = {{1, 70}, {16, 70}, {16, 40}, {22, 40}, {22, 22}}, color = {0, 0, 127}));
+      connect(penstock.o, turbine.i) annotation(
+        Line(points = {{10, 30}, {14.95, 30}, {14.95, 10}, {20, 10}}, color = {28, 108, 200}));
+      connect(reservoir.o, intake.i) annotation(
+        Line(points = {{-80, 30}, {-70, 30}}, color = {28, 108, 200}));
+      connect(intake.o, surgeTank.i) annotation(
+        Line(points = {{-50, 30}, {-40, 30}}, color = {28, 108, 200}));
+      connect(surgeTank.o, penstock.i) annotation(
+        Line(points = {{-20, 30}, {-10, 30}}, color = {28, 108, 200}));
+      connect(discharge.o, tail.o) annotation(
+        Line(points = {{70, 0}, {80, 0}}, color = {28, 108, 200}));
+      connect(const.y, reservoir.level) annotation(
+        Line(points = {{-91, -12}, {-100, -12}, {-100, -14}, {-118, -14}, {-118, 36}, {-102, 36}}, color = {0, 0, 127}));
+      connect(const1.y, tail.level) annotation(
+        Line(points = {{85, -68}, {114, -68}, {114, 6}, {102, 6}}, color = {0, 0, 127}));
+      connect(constant2.y, division1.u2) annotation(
+        Line(points = {{82, 47}, {82, 62}, {52, 62}, {52, 76}, {74, 76}}, color = {0, 0, 127}));
+      connect(division.y, division1.u1) annotation(
+        Line(points = {{36, 71}, {38, 71}, {38, 88}, {74, 88}}, color = {0, 0, 127}));
+      connect(division.u2, div0protect.y) annotation(
+        Line(points = {{42, 48}, {42, 45.15}, {54, 45.15}, {54, 41}}, color = {0, 0, 127}));
+      connect(division1.y, Tourque_out) annotation(
+        Line(points = {{98, 82}, {118, 82}}, color = {0, 0, 127}));
+      connect(division.u1, turbine.P_out) annotation(
+        Line(points = {{30, 48}, {30, 22}, {34, 22}}, color = {0, 0, 127}));
+      connect(W_in, div0protect.u) annotation(
+        Line(points = {{-120, -42}, {46, -42}, {46, 26}, {54, 26}}, color = {0, 0, 127}));
+  connect(constantxx.y, turbine.w_in) annotation(
+        Line(points = {{-62, -80}, {22, -80}, {22, -2}}, color = {0, 0, 127}));
+      annotation (experiment(StopTime = 300, StartTime = 0, Tolerance = 1e-06, Interval = 0.6));
+    end HPM1;
+    
+    model HydroM1
+    TestPackage.Hydro.SignalChecker SignalChecker annotation(
+        Placement(visible = true, transformation(origin = {38, 8}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Modelica.Blocks.Interfaces.RealOutput SM_Start_Torque_out annotation(
+        Placement(visible = true, transformation(origin = {110, -40}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {146, -58}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Modelica.Blocks.Interfaces.IntegerOutput SM_Start_Stop_Out annotation(
+        Placement(visible = true, transformation(origin = {110, 80}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {126, 48}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Modelica.Blocks.Interfaces.IntegerOutput TM_Speed_Torque_Out annotation(
+        Placement(visible = true, transformation(origin = {110, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {140, -54}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Modelica.Blocks.Interfaces.IntegerOutput TM_Start_Stop_Out annotation(
+        Placement(visible = true, transformation(origin = {110, 40}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Modelica.Blocks.Interfaces.RealOutput TM_Torque_Out annotation(
+        Placement(visible = true, transformation(origin = {110, 60}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {124, 28}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Modelica.Blocks.Interfaces.IntegerOutput TM_Forward_Reverse_Out annotation(
+        Placement(visible = true, transformation(origin = {110, 20}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {128, -32}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Modelica.Blocks.Interfaces.RealOutput SM_Speed_Out annotation(
+        Placement(visible = true, transformation(origin = {110, -20}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {122, -26}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Modelica.Blocks.Interfaces.RealInput SM_torque_in annotation(
+        Placement(visible = true, transformation(origin = {-120, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-102, 20}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+    Modelica.Blocks.Interfaces.RealInput SM_speed_in annotation(
+        Placement(visible = true, transformation(origin = {-120, 80}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-102, 78}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+  HPM1 hpm1 annotation(
+        Placement(visible = true, transformation(origin = {-8, 8}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  TestPackage.Hydro.SMModel1 sMModel1 annotation(
+        Placement(visible = true, transformation(origin = {-56, 10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    equation
+      connect(SignalChecker.TM_speed_torque, TM_Speed_Torque_Out) annotation(
+        Line(points = {{50, 4}, {66, 4}, {66, 0}, {110, 0}}, color = {255, 127, 0}));
+      connect(SignalChecker.TM_forward_reverse, TM_Forward_Reverse_Out) annotation(
+        Line(points = {{50, 8}, {80, 8}, {80, 20}, {110, 20}}, color = {255, 127, 0}));
+      connect(SignalChecker.TM_stop_start, TM_Start_Stop_Out) annotation(
+        Line(points = {{50, 12}, {70, 12}, {70, 40}, {110, 40}}, color = {255, 127, 0}));
+      connect(SignalChecker.Test_motor_torque_out, TM_Torque_Out) annotation(
+        Line(points = {{50, 16}, {60, 16}, {60, 60}, {110, 60}}, color = {0, 0, 127}));
+      connect(hpm1.Tourque_out, SignalChecker.Torque_In) annotation(
+        Line(points = {{4, 16}, {14, 16}, {14, 8}, {26, 8}}, color = {0, 0, 127}));
+  connect(sMModel1.SM_w_out, hpm1.W_in) annotation(
+        Line(points = {{-44, 18}, {-26, 18}, {-26, 8}, {-20, 8}}, color = {0, 0, 127}));
+  connect(sMModel1.SM_start_stop_out, SM_Start_Stop_Out) annotation(
+        Line(points = {{-44, 14}, {-18, 14}, {-18, 80}, {110, 80}}, color = {255, 127, 0}));
+  connect(sMModel1.SM_speed_out, SM_Speed_Out) annotation(
+        Line(points = {{-44, 10}, {-28, 10}, {-28, -20}, {110, -20}}, color = {0, 0, 127}));
+  connect(sMModel1.SM_start_torque_out, SM_Start_Torque_out) annotation(
+        Line(points = {{-44, 6}, {-38, 6}, {-38, -40}, {110, -40}}, color = {0, 0, 127}));
+  connect(SM_torque_in, sMModel1.AO2) annotation(
+        Line(points = {{-120, 0}, {-68, 0}, {-68, 2}}, color = {0, 0, 127}));
+  connect(sMModel1.AO1, SM_speed_in) annotation(
+        Line(points = {{-68, 18}, {-80, 18}, {-80, 80}, {-120, 80}}, color = {0, 0, 127}));
+      annotation(
+        experiment(StartTime = 0, StopTime = 300, Tolerance = 1e-6, Interval = 0.6));
+    end HydroM1;
+    
+    model HPM2 "Model of a hydropower system with a simple turbine turbine"
+      extends Modelica.Icons.Example;
+      parameter Real TorqueScaling=200000 "Scale down of the torque signal out";
+      parameter Real GuideVaneOpeningOffset=0.7493 "Start possition of theguide vane";
+      parameter Real GuideVaneOpeningChange = -0.04615 "Change in guide vane possition";
+      parameter Real GuideVaneOpeningDuration = 30 "Duration of the change in seconds";
+      parameter Real GuideVaneOpeningStartTime= 50 "Start time for change happening in seconds";
+      OpenHPL.Waterway.Reservoir reservoir(useLevel=true,
+                                           h_0=48) annotation (Placement(transformation(
+            origin={-90,30},
+            extent={{-10,-10},{10,10}})));
+      Modelica.Blocks.Sources.Ramp control(
+        duration=GuideVaneOpeningDuration, height = GuideVaneOpeningChange, offset = GuideVaneOpeningOffset,
+        startTime=GuideVaneOpeningStartTime) annotation (
+        Placement(transformation(origin={-10,70}, extent = {{-10, -10}, {10, 10}})));
+      OpenHPL.Waterway.Pipe intake(H=23, Vdot(fixed = true)) annotation (Placement(transformation(extent={{-70,20},{-50,40}})));
+      OpenHPL.Waterway.Pipe discharge(H=0.5, L=600) annotation (Placement(transformation(extent={{50,-10},{70,10}})));
+      OpenHPL.Waterway.Reservoir tail(useLevel=true,
+                                      h_0=5) annotation (Placement(transformation(
+            origin={90,0},
+            extent={{-10,10},{10,-10}},
+            rotation=180)));
+      replaceable OpenHPL.Waterway.Pipe penstock(
+        D_i=3,
+        D_o=3,
+        H=428.5,
+        L=600,
+        vertical=true) constrainedby OpenHPL.Interfaces.TwoContact
+                                                           annotation (Placement(transformation(origin={0,30}, extent={{-10,-10},{10,10}})));
+      OpenHPL.Waterway.SurgeTank surgeTank(h_0=69.9) annotation (Placement(transformation(
+            origin={-30,30},
+            extent={{-10,-10},{10,10}})));
+      OpenHPL.ElectroMech.Turbines.Turbine turbine(
+        C_v=3.7,
+        ConstEfficiency=false,
+        enable_nomSpeed=true,
+        enable_f=false,
+        enable_P_out=true, enable_w_in = true) annotation (Placement(transformation(origin={30,10},
+              extent={{-10,-10},{10,10}})));
+      inner OpenHPL.Data data annotation (Placement(transformation(
+            origin={-90,90},
+            extent={{-10,-10},{10,10}})));
+      Modelica.Blocks.Sources.Constant const(k=48)   annotation (
+        Placement(visible = true, transformation(origin = {-80, -12}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+      Modelica.Blocks.Sources.Constant const1(k=5)   annotation (
+        Placement(visible = true, transformation(origin={74,-68},     extent={{-10,-10},
+                {10,10}},                                                                              rotation=0)));
+      Modelica.Blocks.Interfaces.RealOutput Tourque_out                          "Mechanical Output power"
+        annotation (Placement(visible = true, transformation(origin = {6, 12}, extent = {{102, 60}, {122, 80}}, rotation = 0), iconTransformation(origin = {0, 0}, extent = {{102, 60}, {122, 80}}, rotation = 0)));
+    Modelica.Blocks.Math.Division division1 annotation(
+        Placement(visible = true, transformation(origin = {86, 82}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Modelica.Blocks.Math.Division division annotation(
+        Placement(visible = true, transformation(origin = {36, 60}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
+    Modelica.Blocks.Nonlinear.Limiter div0protect(uMax = Modelica.Constants.inf, uMin = Modelica.Constants.small) annotation(
+        Placement(visible = true, transformation(origin = {54, 34}, extent = {{6, -6}, {-6, 6}}, rotation = -90)));
+    Modelica.Blocks.Sources.Constant constant2(k = TorqueScaling) annotation(
+        Placement(visible = true, transformation(origin = {82, 36}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
+    Modelica.Blocks.Interfaces.RealInput W_in annotation(
+        Placement(visible = true, transformation(origin = {-120, -42}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-122, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+    equation
+      connect(turbine.o, discharge.i) annotation(
+        Line(points = {{40, 10}, {44, 10}, {44, 0}, {50, 0}}, color = {28, 108, 200}));
+      connect(control.y, turbine.u_t) annotation(
+        Line(points = {{1, 70}, {16, 70}, {16, 40}, {22, 40}, {22, 22}}, color = {0, 0, 127}));
+      connect(penstock.o, turbine.i) annotation(
+        Line(points = {{10, 30}, {14.95, 30}, {14.95, 10}, {20, 10}}, color = {28, 108, 200}));
+      connect(reservoir.o, intake.i) annotation(
+        Line(points = {{-80, 30}, {-70, 30}}, color = {28, 108, 200}));
+      connect(intake.o, surgeTank.i) annotation(
+        Line(points = {{-50, 30}, {-40, 30}}, color = {28, 108, 200}));
+      connect(surgeTank.o, penstock.i) annotation(
+        Line(points = {{-20, 30}, {-10, 30}}, color = {28, 108, 200}));
+      connect(discharge.o, tail.o) annotation(
+        Line(points = {{70, 0}, {80, 0}}, color = {28, 108, 200}));
+      connect(const.y, reservoir.level) annotation(
+        Line(points = {{-91, -12}, {-100, -12}, {-100, -14}, {-118, -14}, {-118, 36}, {-102, 36}}, color = {0, 0, 127}));
+      connect(const1.y, tail.level) annotation(
+        Line(points = {{85, -68}, {114, -68}, {114, 6}, {102, 6}}, color = {0, 0, 127}));
+      connect(constant2.y, division1.u2) annotation(
+        Line(points = {{82, 47}, {82, 62}, {52, 62}, {52, 76}, {74, 76}}, color = {0, 0, 127}));
+      connect(division.y, division1.u1) annotation(
+        Line(points = {{36, 71}, {38, 71}, {38, 88}, {74, 88}}, color = {0, 0, 127}));
+      connect(division.u2, div0protect.y) annotation(
+        Line(points = {{42, 48}, {42, 45.15}, {54, 45.15}, {54, 41}}, color = {0, 0, 127}));
+      connect(division1.y, Tourque_out) annotation(
+        Line(points = {{98, 82}, {118, 82}}, color = {0, 0, 127}));
+      connect(division.u1, turbine.P_out) annotation(
+        Line(points = {{30, 48}, {30, 22}, {34, 22}}, color = {0, 0, 127}));
+      connect(W_in, div0protect.u) annotation(
+        Line(points = {{-120, -42}, {46, -42}, {46, 26}, {54, 26}}, color = {0, 0, 127}));
+  connect(W_in, turbine.w_in) annotation(
+        Line(points = {{-120, -42}, {22, -42}, {22, -2}}, color = {0, 0, 127}));
+      annotation (experiment(StopTime = 300, StartTime = 0, Tolerance = 1e-06, Interval = 0.6));
+    end HPM2;
+    
+    model HydroM2
+    TestPackage.Hydro.SignalChecker SignalChecker annotation(
+        Placement(visible = true, transformation(origin = {38, 8}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Modelica.Blocks.Interfaces.RealOutput SM_Start_Torque_out annotation(
+        Placement(visible = true, transformation(origin = {110, -40}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {146, -58}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Modelica.Blocks.Interfaces.IntegerOutput SM_Start_Stop_Out annotation(
+        Placement(visible = true, transformation(origin = {110, 80}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {126, 48}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Modelica.Blocks.Interfaces.IntegerOutput TM_Speed_Torque_Out annotation(
+        Placement(visible = true, transformation(origin = {110, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {140, -54}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Modelica.Blocks.Interfaces.IntegerOutput TM_Start_Stop_Out annotation(
+        Placement(visible = true, transformation(origin = {110, 40}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Modelica.Blocks.Interfaces.RealOutput TM_Torque_Out annotation(
+        Placement(visible = true, transformation(origin = {110, 60}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {124, 28}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Modelica.Blocks.Interfaces.IntegerOutput TM_Forward_Reverse_Out annotation(
+        Placement(visible = true, transformation(origin = {110, 20}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {128, -32}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Modelica.Blocks.Interfaces.RealOutput SM_Speed_Out annotation(
+        Placement(visible = true, transformation(origin = {110, -20}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {122, -26}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Modelica.Blocks.Interfaces.RealInput SM_torque_in annotation(
+        Placement(visible = true, transformation(origin = {-120, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-102, 20}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+    Modelica.Blocks.Interfaces.RealInput SM_speed_in annotation(
+        Placement(visible = true, transformation(origin = {-120, 80}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-102, 78}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+    TestPackage.Hydro.SMModel1 sMModel1 annotation(
+        Placement(visible = true, transformation(origin = {-56, 10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  HPM2 hpm2 annotation(
+        Placement(visible = true, transformation(origin = {-4, 8}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    equation
+      connect(SignalChecker.TM_speed_torque, TM_Speed_Torque_Out) annotation(
+        Line(points = {{50, 4}, {66, 4}, {66, 0}, {110, 0}}, color = {255, 127, 0}));
+      connect(SignalChecker.TM_forward_reverse, TM_Forward_Reverse_Out) annotation(
+        Line(points = {{50, 8}, {80, 8}, {80, 20}, {110, 20}}, color = {255, 127, 0}));
+      connect(SignalChecker.TM_stop_start, TM_Start_Stop_Out) annotation(
+        Line(points = {{50, 12}, {70, 12}, {70, 40}, {110, 40}}, color = {255, 127, 0}));
+      connect(SignalChecker.Test_motor_torque_out, TM_Torque_Out) annotation(
+        Line(points = {{50, 16}, {60, 16}, {60, 60}, {110, 60}}, color = {0, 0, 127}));
+      connect(sMModel1.SM_start_stop_out, SM_Start_Stop_Out) annotation(
+        Line(points = {{-44, 14}, {-18, 14}, {-18, 80}, {110, 80}}, color = {255, 127, 0}));
+      connect(sMModel1.SM_speed_out, SM_Speed_Out) annotation(
+        Line(points = {{-44, 10}, {-28, 10}, {-28, -20}, {110, -20}}, color = {0, 0, 127}));
+      connect(sMModel1.SM_start_torque_out, SM_Start_Torque_out) annotation(
+        Line(points = {{-44, 6}, {-38, 6}, {-38, -40}, {110, -40}}, color = {0, 0, 127}));
+      connect(SM_torque_in, sMModel1.AO2) annotation(
+        Line(points = {{-120, 0}, {-68, 0}, {-68, 2}}, color = {0, 0, 127}));
+      connect(sMModel1.AO1, SM_speed_in) annotation(
+        Line(points = {{-68, 18}, {-80, 18}, {-80, 80}, {-120, 80}}, color = {0, 0, 127}));
+  connect(hpm2.Tourque_out, SignalChecker.Torque_In) annotation(
+        Line(points = {{8, 16}, {20, 16}, {20, 8}, {26, 8}}, color = {0, 0, 127}));
+  connect(hpm2.W_in, sMModel1.SM_w_out) annotation(
+        Line(points = {{-16, 8}, {-26, 8}, {-26, 18}, {-44, 18}}, color = {0, 0, 127}));
+      annotation(
+        experiment(StartTime = 0, StopTime = 300, Tolerance = 1e-6, Interval = 0.6));
+    end HydroM2;
   end Hydro;
   annotation (
     uses(Modelica(version = "4.0.0"), OpenHPL(version = "2.0.1")));
