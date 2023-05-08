@@ -2521,16 +2521,16 @@ package TestPackage
 
     model SMModel1
       parameter Real ServoMotorVoltageAmplitude = 2.5 "Voltage signal sendt to the Servomotor";
-      parameter Real ServoMotorVoltageStartTime = 1 "Ramp up start time";
+      parameter Real ServoMotorVoltageStartTime = 0.1 "Ramp up start time";
       parameter Real ServoMotorVoltageDuration = 0 "Duration of the ram up";
       parameter Real ServoMotorVoltageOffset = 0 "Initial voltage value of the servo motor";
       parameter Real ServoMotorTorqueAmplitude = 0.05 "Start torque for the servo motor";
-      parameter Real ServoMotorTorqueStartTime = 1 "Ramp up start time";
+      parameter Real ServoMotorTorqueStartTime = 0.1 "Ramp up start time";
       parameter Real ServoMotorTorqueDuration = 0 "Duration of the ramp up";
       parameter Real ServoMotorTorqueOffset = 0 "Initial torque value of the servo motor";
       parameter Real TorqueConversion = 17.2 "Converting the torque measured from the SM from voltage to torque";
       parameter Real SpeedConversion = 405*2*3.14159265/60 "Converting the measured speed of the SM from voltage to angular velosity";
-      parameter Real DelayStartTime = 1 "Delay for first signal sendt in seconds";
+      parameter Real DelayStartTime = 0.1 "Delay for first signal sendt in seconds";
       Modelica.Blocks.Logical.And and1 annotation(
         Placement(visible = true, transformation(origin = {-20, 88}, extent = {{28, -60}, {48, -40}}, rotation = 0)));
       Modelica.Blocks.Interfaces.RealOutput SM_speed_out annotation(
@@ -2878,10 +2878,6 @@ package TestPackage
       parameter Real GuideVaneOpeningChange = -0.04615 "Change in guide vane possition";
       parameter Real GuideVaneOpeningDuration = 30 "Duration of the change in seconds";
       parameter Real GuideVaneOpeningStartTime = 50 "Start time for change happening in seconds";
-      parameter Real AngularVelocityHeight = -10.5 "Change of the angular velosity start signal";
-      parameter Real AngularVelocityOffset = 10.5 "Start value of the angular velocity signal";
-      parameter Real AngularVelocityDuration = 0 "Duration of the angular velosity ramp down signal";
-      parameter Real AngularVelocityStartTime =1 "Start time of the change in angular velosity";
       OpenHPL.Waterway.Reservoir reservoir(useLevel = true, h_0 = 48) annotation(
         Placement(transformation(origin = {-90, 30}, extent = {{-10, -10}, {10, 10}})));
       Modelica.Blocks.Sources.Ramp control(duration = GuideVaneOpeningDuration, height = GuideVaneOpeningChange, offset = GuideVaneOpeningOffset, startTime = GuideVaneOpeningStartTime) annotation(
@@ -2914,12 +2910,12 @@ package TestPackage
         Placement(visible = true, transformation(origin = {54, 34}, extent = {{6, -6}, {-6, 6}}, rotation = -90)));
       Modelica.Blocks.Sources.Constant constant2(k = TorqueScaling) annotation(
         Placement(visible = true, transformation(origin = {82, 36}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
-      Modelica.Blocks.Interfaces.RealInput W_in(start = 1) annotation(
+      Modelica.Blocks.Interfaces.RealInput W_in annotation(
         Placement(visible = true, transformation(origin = {-120, -42}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-122, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
       Modelica.Blocks.Math.Add addd annotation(
         Placement(visible = true, transformation(origin = {10, -72}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Sources.Ramp W_in_start(duration = AngularVelocityDuration, height = AngularVelocityHeight, offset = AngularVelocityOffset, startTime = AngularVelocityStartTime)  annotation(
-        Placement(visible = true, transformation(origin = {-74, -68}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Sources.Constant W_in_constant(k = 12) annotation(
+        Placement(visible = true, transformation(origin = {-60, -72}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     equation
       connect(turbine.o, discharge.i) annotation(
         Line(points = {{40, 10}, {44, 10}, {44, 0}, {50, 0}}, color = {28, 108, 200}));
@@ -2955,8 +2951,8 @@ package TestPackage
         Line(points = {{-120, -42}, {-6, -42}, {-6, -66}, {-2, -66}}, color = {0, 0, 127}));
       connect(addd.y, turbine.w_in) annotation(
         Line(points = {{21, -72}, {23, -72}, {23, -2}, {22, -2}}, color = {0, 0, 127}));
-  connect(W_in_start.y, addd.u2) annotation(
-        Line(points = {{-62, -68}, {-30, -68}, {-30, -78}, {-2, -78}}, color = {0, 0, 127}));
+  connect(W_in_constant.y, addd.u2) annotation(
+        Line(points = {{-49, -72}, {-17.5, -72}, {-17.5, -78}, {-2, -78}}, color = {0, 0, 127}));
       annotation(
         experiment(StopTime = 300, StartTime = 0, Tolerance = 1e-06, Interval = 0.6),
         __OpenModelica_commandLineOptions = "--matchingAlgorithm=PFPlusExt --indexReductionMethod=dynamicStateSelection -d=initialization,NLSanalyticJacobian --fmuCMakeBuild=true --fmuRuntimeDepends=none ",
@@ -3018,11 +3014,11 @@ package TestPackage
     
     model SMModel2
       parameter Real ServoMotorVoltageAmplitude = 2.5 "Voltage signal sendt to the Servomotor";
-      parameter Real ServoMotorVoltageStartTime = 1 "Ramp up start time";
+      parameter Real ServoMotorVoltageStartTime = 0.1 "Ramp up start time";
       parameter Real ServoMotorVoltageDuration = 0 "Duration of the ram up";
       parameter Real ServoMotorVoltageOffset = 0 "Initial voltage value of the servo motor";
       parameter Real ServoMotorTorqueAmplitude = 0.05 "Start torque for the servo motor";
-      parameter Real ServoMotorTorqueStartTime = 1 "Ramp up start time";
+      parameter Real ServoMotorTorqueStartTime = 0.1 "Ramp up start time";
       parameter Real ServoMotorTorqueDuration = 0 "Duration of the ramp up";
       parameter Real ServoMotorTorqueOffset = 0 "Initial torque value of the servo motor";
       parameter Real TorqueConversion = 17.2 "Converting the torque measured from the SM from voltage to torque";
