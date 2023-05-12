@@ -50,7 +50,7 @@ package TestPackage
       Placement(visible = true, transformation(origin = {-33, 71}, extent = {{-9, -9}, {9, 9}}, rotation = 0)));
     Modelica.Blocks.Math.Gain SM_Voltage_Conversion(k = 405) annotation(
       Placement(visible = true, transformation(origin = {-52, 20}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-    Modelica.Blocks.Math.Gain SM_Torque_Conversion(k = 17.2) annotation(
+    Modelica.Blocks.Math.Gain SM_Torque_Conversion(k = -17.21) annotation(
       Placement(visible = true, transformation(origin = {-34, -20}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     Modelica.Blocks.Interfaces.RealInput SM_M_Speed_In annotation(
       Placement(visible = true, transformation(origin = {-120, 20}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-120, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
@@ -60,8 +60,6 @@ package TestPackage
       Placement(visible = true, transformation(origin = {110, 20}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 20}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     Modelica.Blocks.Sources.Constant Speed_Conversion(k = 455) annotation(
       Placement(visible = true, transformation(origin = {-87, 59}, extent = {{-9, -9}, {9, 9}}, rotation = 0)));
-    Modelica.Blocks.Nonlinear.Limiter div0protect(uMax = Modelica.Constants.inf, uMin = Modelica.Constants.small) annotation(
-      Placement(visible = true, transformation(origin = {-88, -20}, extent = {{6, 6}, {-6, -6}}, rotation = -180)));
     Modelica.Blocks.Logical.GreaterThreshold greaterThreshold annotation(
       Placement(visible = true, transformation(origin = {60, 60}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
     Modelica.Blocks.Sources.Ramp ramp(duration = TestMotorTorqueDuration, height = TestMotorTorqueOffset, offset = 0, startTime = 5) annotation(
@@ -99,8 +97,6 @@ package TestPackage
       Line(points = {{80.4, 60}, {86.1, 60}, {86.1, 20}, {110.1, 20}}, color = {255, 127, 0}));
     connect(Speed_Conversion.y, TM_Speed.u2) annotation(
       Line(points = {{-77, 59}, {-65, 59}}, color = {0, 0, 127}));
-    connect(div0protect.u, SM_M_Torque_In) annotation(
-      Line(points = {{-95, -20}, {-120, -20}}, color = {0, 0, 127}));
     connect(booleanToInteger1.u, greaterThreshold.y) annotation(
       Line(points = {{71.2, 60}, {64.2, 60}}, color = {255, 0, 255}));
     connect(add.y, greaterThreshold.u) annotation(
@@ -109,8 +105,6 @@ package TestPackage
       Line(points = {{45, 60}, {47.6, 60}, {47.6, 80}, {110, 80}}, color = {0, 0, 127}));
     connect(filter.y, SM_Torque_Conversion.u) annotation(
       Line(points = {{-53, -20}, {-46, -20}}, color = {0, 0, 127}));
-    connect(filter.u, div0protect.y) annotation(
-      Line(points = {{-76, -20}, {-81, -20}}, color = {0, 0, 127}));
     connect(TM_M_Speed_In, filter1.u) annotation(
       Line(points = {{-120, 88}, {-98, 88}}, color = {0, 0, 127}));
     connect(filter1.y, TM_Voltage.u1) annotation(
@@ -127,6 +121,8 @@ package TestPackage
       Line(points = {{10, 16}, {20, 16}, {20, 56}, {30, 56}}, color = {0, 0, 127}));
     connect(TM_Start_Stop_Out, booleanToInteger1.y) annotation(
       Line(points = {{110, 60}, {80, 60}}, color = {255, 127, 0}));
+  connect(filter.u, SM_M_Torque_In) annotation(
+      Line(points = {{-76, -20}, {-120, -20}}, color = {0, 0, 127}));
     annotation(
       Icon(coordinateSystem(preserveAspectRatio = false)),
       Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-140, 120}, {160, -80}}), graphics = {Text(extent = {{120, 88}, {120, 88}}, textString = "text")}),
@@ -303,7 +299,7 @@ package TestPackage
        Placement(transformation(origin = {0, 30}, extent = {{-10, -10}, {10, 10}})));
     OpenHPL.Waterway.SurgeTank surgeTank(h_0 = 69.9) annotation(
       Placement(visible = true, transformation(origin = {-40, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-    OpenHPL.ElectroMech.Turbines.Turbine turbine(C_v = 3.7, ConstEfficiency = true, enable_nomSpeed = false, enable_f = false, enable_P_out = true, enable_w_in = true) annotation(
+    OpenHPL.ElectroMech.Turbines.Turbine turbine(C_v = 3.7, ConstEfficiency = true, enable_nomSpeed = false, enable_f = false, enable_P_out = true, enable_w_in = false) annotation(
       Placement(visible = true, transformation(origin = {24, 10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     inner OpenHPL.Data data annotation(
       Placement(visible = true, transformation(origin = {-90, 74}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -323,10 +319,6 @@ package TestPackage
       Placement(visible = true, transformation(origin = {82, 36}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
     Modelica.Blocks.Interfaces.RealInput W_in annotation(
       Placement(visible = true, transformation(origin = {-120, -24}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-120, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-    Modelica.Blocks.Math.Add add4 annotation(
-      Placement(visible = true, transformation(origin = {2, -44}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-    Modelica.Blocks.Sources.Constant W_in_constant(k = 12) annotation(
-      Placement(visible = true, transformation(origin = {-90, -50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   equation
     connect(turbine.o, discharge.i) annotation(
       Line(points = {{34, 10}, {38, 10}, {38, 0}, {50, 0}}, color = {28, 108, 200}));
@@ -356,12 +348,6 @@ package TestPackage
       Line(points = {{28, 48}, {28, 21}}, color = {0, 0, 127}));
     connect(W_in, div0protect.u) annotation(
       Line(points = {{-120, -24}, {40, -24}, {40, 27}}, color = {0, 0, 127}));
-    connect(W_in, add4.u1) annotation(
-      Line(points = {{-120, -24}, {-22, -24}, {-22, -38}, {-10, -38}}, color = {0, 0, 127}));
-    connect(add4.y, turbine.w_in) annotation(
-      Line(points = {{13, -44}, {17, -44}, {17, -2}, {16, -2}}, color = {0, 0, 127}));
-    connect(W_in_constant.y, add4.u2) annotation(
-      Line(points = {{-79, -50}, {-10, -50}}, color = {0, 0, 127}));
     connect(penstock.i, surgeTank.o) annotation(
       Line(points = {{-18, 30}, {-30, 30}}, color = {0, 128, 255}));
     annotation(
