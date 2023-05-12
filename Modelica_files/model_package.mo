@@ -232,10 +232,6 @@ package TestPackage
       Placement(visible = true, transformation(origin = {-76, -80}, extent = {{6, 6}, {-6, -6}}, rotation = -180)));
     Modelica.Blocks.Continuous.Filter filter(f_cut = 1) annotation(
       Placement(visible = true, transformation(origin = {-42, -80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-    Modelica.Blocks.Sources.Step step(startTime = DelayStartTime) annotation(
-      Placement(visible = true, transformation(origin = {18, 74}, extent = {{-8, -8}, {8, 8}}, rotation = 0)));
-    Modelica.Blocks.Math.Product product annotation(
-      Placement(visible = true, transformation(origin = {56, 80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   equation
     connect(and1.u1, greaterThreshold1.y) annotation(
       Line(points = {{32, 40}, {21, 40}}, color = {255, 0, 255}));
@@ -263,14 +259,10 @@ package TestPackage
       Line(points = {{-84, -80}, {-120, -80}}, color = {0, 0, 127}));
     connect(SpeedConv.u, AO1) annotation(
       Line(points = {{-62, 80}, {-118, 80}}, color = {0, 0, 127}));
-    connect(step.y, product.u2) annotation(
-      Line(points = {{27, 74}, {44, 74}}, color = {0, 0, 127}));
-    connect(SpeedConv.y, product.u1) annotation(
-      Line(points = {{-39, 80}, {-20, 80}, {-20, 86}, {42, 86}, {42, 84}, {44, 84}, {44, 86}}, color = {0, 0, 127}));
-    connect(product.y, SM_w_out) annotation(
-      Line(points = {{67, 80}, {108, 80}}, color = {0, 0, 127}));
     connect(Power.u1, SpeedConv.y) annotation(
       Line(points = {{44, -68}, {28, -68}, {28, -60}, {-80, -60}, {-80, 60}, {-20, 60}, {-20, 80}, {-39, 80}}, color = {0, 0, 127}));
+  connect(SpeedConv.y, SM_w_out) annotation(
+      Line(points = {{-38, 80}, {108, 80}}, color = {0, 0, 127}));
     annotation(
       Icon(coordinateSystem(preserveAspectRatio = false)),
       Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-140, 100}, {160, -100}})),
