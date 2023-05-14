@@ -367,34 +367,34 @@ package TestPackage
       Placement(visible = true, transformation(origin = {-120, 2}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-102, 20}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
     Modelica.Blocks.Interfaces.RealInput SM_speed_in annotation(
       Placement(visible = true, transformation(origin = {-120, 80}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-102, 78}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-    TestPackage.SMModel sMModel annotation(
+    TestPackage.SMModel SMM annotation(
       Placement(visible = true, transformation(origin = {-50, 10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     TestPackage.HPM hpm annotation(
       Placement(visible = true, transformation(origin = {0, 10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-    TestPackage.SignalChecker signalChecker annotation(
+    TestPackage.SignalChecker SC annotation(
       Placement(visible = true, transformation(origin = {50, 10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   equation
-    connect(sMModel.AO2, SM_torque_in) annotation(
+    connect(SMM.AO2, SM_torque_in) annotation(
       Line(points = {{-62, 2}, {-120, 2}}, color = {0, 0, 127}));
-    connect(sMModel.AO1, SM_speed_in) annotation(
+    connect(SMM.AO1, SM_speed_in) annotation(
       Line(points = {{-62, 18}, {-80, 18}, {-80, 80}, {-120, 80}}, color = {0, 0, 127}));
-    connect(sMModel.SM_start_stop_out, SM_Start_Stop_Out) annotation(
+    connect(SMM.SM_start_stop_out, SM_Start_Stop_Out) annotation(
       Line(points = {{-38, 18}, {-20, 18}, {-20, 80}, {110, 80}}, color = {255, 127, 0}));
-    connect(sMModel.SM_speed_out, SM_Speed_Out) annotation(
+    connect(SMM.SM_speed_out, SM_Speed_Out) annotation(
       Line(points = {{-38, 6}, {-24, 6}, {-24, -20}, {110, -20}}, color = {0, 0, 127}));
-    connect(sMModel.SM_start_torque_out, SM_Start_Torque_out) annotation(
+    connect(SMM.SM_start_torque_out, SM_Start_Torque_out) annotation(
       Line(points = {{-38, 2}, {-30, 2}, {-30, -40}, {110, -40}}, color = {0, 0, 127}));
-    connect(sMModel.SM_w_out, hpm.W_in) annotation(
+    connect(SMM.SM_w_out, hpm.W_in) annotation(
       Line(points = {{-38, 10}, {-12, 10}}, color = {0, 0, 127}));
-    connect(hpm.Tourque_out, signalChecker.Torque_In) annotation(
+    connect(hpm.Tourque_out, SC.Torque_In) annotation(
       Line(points = {{12, 10}, {38, 10}}, color = {0, 0, 127}));
-    connect(signalChecker.Test_motor_torque_out, TM_Torque_Out) annotation(
+    connect(SC.Test_motor_torque_out, TM_Torque_Out) annotation(
       Line(points = {{62, 18}, {68, 18}, {68, 60}, {110, 60}}, color = {0, 0, 127}));
-    connect(signalChecker.TM_stop_start, TM_Start_Stop_Out) annotation(
+    connect(SC.TM_stop_start, TM_Start_Stop_Out) annotation(
       Line(points = {{62, 14}, {74, 14}, {74, 40}, {110, 40}}, color = {255, 127, 0}));
-    connect(signalChecker.TM_forward_reverse, TM_Forward_Reverse_Out) annotation(
+    connect(SC.TM_forward_reverse, TM_Forward_Reverse_Out) annotation(
       Line(points = {{62, 10}, {80, 10}, {80, 20}, {110, 20}}, color = {255, 127, 0}));
-    connect(signalChecker.TM_speed_torque, TM_Speed_Torque_Out) annotation(
+    connect(SC.TM_speed_torque, TM_Speed_Torque_Out) annotation(
       Line(points = {{62, 6}, {80, 6}, {80, 0}, {110, 0}}, color = {255, 127, 0}));
     annotation(
       experiment(StartTime = 0, StopTime = 300, Tolerance = 1e-06, Interval = 0.6),
